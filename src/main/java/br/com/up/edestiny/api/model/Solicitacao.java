@@ -19,14 +19,11 @@ import br.com.up.edestiny.api.model.enums.SituacaoSolicitacao;
 @Table(name = "solicitacao")
 public class Solicitacao implements Serializable {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long id;
+	private Long id;
 
 	@ManyToOne
 	@JoinColumn(name = "solicitante_id")

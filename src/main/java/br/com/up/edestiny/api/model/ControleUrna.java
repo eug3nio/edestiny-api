@@ -2,26 +2,68 @@ package br.com.up.edestiny.api.model;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.LocalDate;
 
 import br.com.up.edestiny.api.model.enums.SituacaoUrna;
-import lombok.Getter;
-import lombok.Setter;
 
-@Getter
-@Setter
 public class ControleUrna implements Serializable {
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 1L;
 
-	private long id;
+	private Long id;
 	private Urna urna;
 	private Usuario usuarioResponsavel;
 	private SituacaoUrna situacao;
 	private BigDecimal qtdMovimentacao;
-	private Date dtMovimentacao;
+	private LocalDate dtMovimentacao;
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public Urna getUrna() {
+		return urna;
+	}
+
+	public void setUrna(Urna urna) {
+		this.urna = urna;
+	}
+
+	public Usuario getUsuarioResponsavel() {
+		return usuarioResponsavel;
+	}
+
+	public void setUsuarioResponsavel(Usuario usuarioResponsavel) {
+		this.usuarioResponsavel = usuarioResponsavel;
+	}
+
+	public SituacaoUrna getSituacao() {
+		return situacao;
+	}
+
+	public void setSituacao(SituacaoUrna situacao) {
+		this.situacao = situacao;
+	}
+
+	public BigDecimal getQtdMovimentacao() {
+		return qtdMovimentacao;
+	}
+
+	public void setQtdMovimentacao(BigDecimal qtdMovimentacao) {
+		this.qtdMovimentacao = qtdMovimentacao;
+	}
+
+	public LocalDate getDtMovimentacao() {
+		return dtMovimentacao;
+	}
+
+	public void setDtMovimentacao(LocalDate dtMovimentacao) {
+		this.dtMovimentacao = dtMovimentacao;
+	}
 
 	@Override
 	public int hashCode() {

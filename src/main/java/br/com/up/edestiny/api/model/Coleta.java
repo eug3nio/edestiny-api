@@ -1,28 +1,69 @@
 package br.com.up.edestiny.api.model;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 import br.com.up.edestiny.api.model.enums.SituacaoColeta;
-import lombok.Getter;
-import lombok.Setter;
 
-@Getter
-@Setter
 public class Coleta implements Serializable {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
-	private long id;
+	private Long id;
 	private Coletor coletor;
 	private List<Solicitacao> solicitacoes;
 	private SituacaoColeta situacao;
-	private Date dtMovimentacao;
-	private Date dtPrevistaColeta;
+	private LocalDate dtMovimentacao;
+	private LocalDate dtPrevistaColeta;
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public Coletor getColetor() {
+		return coletor;
+	}
+
+	public void setColetor(Coletor coletor) {
+		this.coletor = coletor;
+	}
+
+	public List<Solicitacao> getSolicitacoes() {
+		return solicitacoes;
+	}
+
+	public void setSolicitacoes(List<Solicitacao> solicitacoes) {
+		this.solicitacoes = solicitacoes;
+	}
+
+	public SituacaoColeta getSituacao() {
+		return situacao;
+	}
+
+	public void setSituacao(SituacaoColeta situacao) {
+		this.situacao = situacao;
+	}
+
+	public LocalDate getDtMovimentacao() {
+		return dtMovimentacao;
+	}
+
+	public void setDtMovimentacao(LocalDate dtMovimentacao) {
+		this.dtMovimentacao = dtMovimentacao;
+	}
+
+	public LocalDate getDtPrevistaColeta() {
+		return dtPrevistaColeta;
+	}
+
+	public void setDtPrevistaColeta(LocalDate dtPrevistaColeta) {
+		this.dtPrevistaColeta = dtPrevistaColeta;
+	}
 
 	@Override
 	public int hashCode() {

@@ -4,23 +4,65 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 
 import br.com.up.edestiny.api.model.enums.TipoMedida;
-import lombok.Getter;
-import lombok.Setter;
 
-@Getter
-@Setter
 public class Urna implements Serializable {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
-	private long id;
+
+	private Long id;
 	private String detalhamento;
 	private TipoMedida tipoMedida;
 	private BigDecimal qtdAtual;
 	private BigDecimal qtdMaxima;
 	private Empresa empresa;
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getDetalhamento() {
+		return detalhamento;
+	}
+
+	public void setDetalhamento(String detalhamento) {
+		this.detalhamento = detalhamento;
+	}
+
+	public TipoMedida getTipoMedida() {
+		return tipoMedida;
+	}
+
+	public void setTipoMedida(TipoMedida tipoMedida) {
+		this.tipoMedida = tipoMedida;
+	}
+
+	public BigDecimal getQtdAtual() {
+		return qtdAtual;
+	}
+
+	public void setQtdAtual(BigDecimal qtdAtual) {
+		this.qtdAtual = qtdAtual;
+	}
+
+	public BigDecimal getQtdMaxima() {
+		return qtdMaxima;
+	}
+
+	public void setQtdMaxima(BigDecimal qtdMaxima) {
+		this.qtdMaxima = qtdMaxima;
+	}
+
+	public Empresa getEmpresa() {
+		return empresa;
+	}
+
+	public void setEmpresa(Empresa empresa) {
+		this.empresa = empresa;
+	}
 
 	@Override
 	public int hashCode() {
