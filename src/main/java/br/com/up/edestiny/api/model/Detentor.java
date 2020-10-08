@@ -8,6 +8,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
@@ -22,26 +25,29 @@ public class Detentor implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
+
 	@NotNull
 	@Size(min = 3, max = 255)
 	private String nome;
-	
+
 	@NotNull
 	@Size(min = 3, max = 255)
 	@Email
 	private String email;
-	
+
 	@NotNull
 	@Size(min = 3, max = 20)
 	private String senha;
-	
+
 	@NotNull
 	@Size(min = 11, max = 15)
 	private String telefone;
-	
+
 	@Column(name = "foto_perfil")
 	private byte[] fotoPerfil;
+
+	@OneToMany
+	@JoinTable(name = "endereco_detentor", joinColumns = @JoinColumn(name = "detentor_id"), inverseJoinColumns = @JoinColumn(name = "endereco_id"))
 	private List<Endereco> enderecos;
 
 	public Long getId() {

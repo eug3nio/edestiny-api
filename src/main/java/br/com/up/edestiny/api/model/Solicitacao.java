@@ -10,7 +10,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import br.com.up.edestiny.api.model.enums.SituacaoSolicitacao;
@@ -28,7 +30,9 @@ public class Solicitacao implements Serializable {
 	@ManyToOne
 	@JoinColumn(name = "solicitante_id")
 	private Detentor solicitante;
-	
+
+	@OneToMany
+	@JoinTable(name = "solicitacao_residuo", joinColumns = @JoinColumn(name = "solicitacao_id"), inverseJoinColumns = @JoinColumn(name = "residuo_id"))
 	private List<Residuo> residuos;
 
 	@Enumerated(EnumType.STRING)
