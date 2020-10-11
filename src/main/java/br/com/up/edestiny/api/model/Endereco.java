@@ -21,11 +21,11 @@ public class Endereco implements Serializable {
 	private Long id;
 	
 	@NotNull
-	@Size(min = 9, max = 9)
+	@Size(min = 9, max = 15)
 	private String longitude;
 	
 	@NotNull
-	@Size(min = 9, max = 9)
+	@Size(min = 9, max = 15)
 	private String latitude;
 
 	public Long getId() {

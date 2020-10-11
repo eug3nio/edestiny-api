@@ -36,7 +36,7 @@ public class Detentor implements Serializable {
 	private String email;
 
 	@NotNull
-	@Size(min = 3, max = 20)
+	@Size(min = 32, max = 32)
 	private String senha;
 
 	@NotNull

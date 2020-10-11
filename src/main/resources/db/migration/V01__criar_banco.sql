@@ -1,7 +1,7 @@
 CREATE TABLE endereco (
   id FLOAT NOT NULL AUTO_INCREMENT,
-  longitude VARCHAR(9) NOT NULL,
-  latitude VARCHAR(9) NOT NULL,
+  longitude VARCHAR(15) NOT NULL,
+  latitude VARCHAR(15) NOT NULL,
   PRIMARY KEY (id)
 ) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8;
 
@@ -9,11 +9,12 @@ CREATE TABLE detentor (
   id FLOAT NOT NULL AUTO_INCREMENT,
   nome VARCHAR(255) NOT NULL,
   email VARCHAR(255) NOT NULL,
-  senha VARCHAR(20) NOT NULL,
-  telefonE VARCHAR(15) NOT NULL,
+  senha VARCHAR(32) NOT NULL,
+  telefone VARCHAR(15) NOT NULL,
   foto_perfil LONGBLOB,
-  PRIMARY KEY (id)
-) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8;
+  PRIMARY KEY (id),
+  UNIQUE (email)
+ ) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8;
 
 CREATE TABLE endereco_detentor (
 	detentor_id FLOAT NOT NULL,
