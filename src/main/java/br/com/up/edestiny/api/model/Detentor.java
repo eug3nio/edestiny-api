@@ -5,11 +5,13 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
@@ -36,7 +38,7 @@ public class Detentor implements Serializable {
 	private String email;
 
 	@NotNull
-	@Size(min = 32, max = 32)
+	@Size(min = 50, max = 72)
 	private String senha;
 
 	@NotNull
@@ -49,6 +51,10 @@ public class Detentor implements Serializable {
 	@OneToMany
 	@JoinTable(name = "endereco_detentor", joinColumns = @JoinColumn(name = "detentor_id"), inverseJoinColumns = @JoinColumn(name = "endereco_id"))
 	private List<Endereco> enderecos;
+
+	@ManyToMany(fetch = FetchType.EAGER)
+	@JoinTable(name = "detentor_permissao", joinColumns = @JoinColumn(name = "detentor_id"), inverseJoinColumns = @JoinColumn(name = "permissao_id"))
+	private List<Permissao> permissoes;
 
 	public Long getId() {
 		return id;
@@ -104,6 +110,14 @@ public class Detentor implements Serializable {
 
 	public void setEnderecos(List<Endereco> enderecos) {
 		this.enderecos = enderecos;
+	}
+
+	public List<Permissao> getPermissoes() {
+		return permissoes;
+	}
+
+	public void setPermissoes(List<Permissao> permissoes) {
+		this.permissoes = permissoes;
 	}
 
 	@Override

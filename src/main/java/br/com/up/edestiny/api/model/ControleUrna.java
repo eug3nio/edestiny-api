@@ -4,17 +4,47 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+
 import br.com.up.edestiny.api.model.enums.SituacaoUrna;
 
+@Entity
+@Table(name = "controle_urna")
 public class ControleUrna implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+
+	@ManyToOne
+	@JoinColumn(name = "urna_id")
 	private Urna urna;
+
+	@ManyToOne
+	@JoinColumn(name = "usuario_id")
 	private Usuario usuarioResponsavel;
+
+	@Enumerated(EnumType.STRING)
+	@NotNull
 	private SituacaoUrna situacao;
+
+	@Column(name = "quantidade_movimentacao")
 	private BigDecimal qtdMovimentacao;
+
+	@NotNull
+	@Column(name = "dt_movimentacao")
 	private LocalDate dtMovimentacao;
 
 	public Long getId() {

@@ -4,17 +4,50 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.List;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+
 import br.com.up.edestiny.api.model.enums.SituacaoColeta;
 
+@Entity
+@Table(name = "coleta")
 public class Coleta implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+
+	@NotNull
+	@ManyToOne
+	@JoinColumn(name = "coletor_id")
 	private Coletor coletor;
+
+	@ManyToMany
+	@JoinTable(name = "coleta_solicitacoes", joinColumns = @JoinColumn(name = "coleta_id"), inverseJoinColumns = @JoinColumn(name = "solicitacao_id"))
 	private List<Solicitacao> solicitacoes;
+
+	@Enumerated(EnumType.STRING)
 	private SituacaoColeta situacao;
+
+	@NotNull
+	@Column(name = "dt_movimentacao")
 	private LocalDate dtMovimentacao;
+
+	@NotNull
+	@Column(name = "dt_prevista_coleta")
 	private LocalDate dtPrevistaColeta;
 
 	public Long getId() {

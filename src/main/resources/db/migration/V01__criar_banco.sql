@@ -9,7 +9,7 @@ CREATE TABLE detentor (
   id FLOAT NOT NULL AUTO_INCREMENT,
   nome VARCHAR(255) NOT NULL,
   email VARCHAR(255) NOT NULL,
-  senha VARCHAR(32) NOT NULL,
+  senha VARCHAR(72) NOT NULL,
   telefone VARCHAR(15) NOT NULL,
   foto_perfil LONGBLOB,
   PRIMARY KEY (id),
@@ -33,7 +33,7 @@ CREATE TABLE categoria (
 CREATE TABLE residuo (
   id FLOAT NOT NULL AUTO_INCREMENT,
   descricao VARCHAR(255) NOT NULL,
-  quantidade DOUBLE(10,3) NOT NULL DEFAULT TRUE,
+  quantidade DOUBLE(10,3) NOT NULL,
   unidade_medida VARCHAR(255) NOT NULL,
   categoria_id FLOAT NOT NULL,
   PRIMARY KEY (id),

@@ -1,10 +1,8 @@
 package br.com.up.edestiny.api.resource;
 
 import java.io.Serializable;
-import java.math.BigInteger;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.List;
+import java.util.Optional;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
@@ -15,6 +13,7 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -45,7 +44,7 @@ public class DetentorResource implements Serializable {
 
 	@Autowired
 	private ApplicationEventPublisher publisher;
-	
+
 	@GetMapping
 	public List<Detentor> listar() {
 		return detentorRepository.findAll();
@@ -54,24 +53,18 @@ public class DetentorResource implements Serializable {
 	@PostMapping
 	@ResponseStatus(code = HttpStatus.CREATED)
 	public ResponseEntity<Detentor> novoDetentor(@Valid @RequestBody Detentor detentor, HttpServletResponse response) {
-		Detentor detentorExistente = detentorRepository.findByEmail(detentor.getEmail());
+		Optional<Detentor> detentorExistente = detentorRepository.findByEmail(detentor.getEmail());
 
-		if (detentorExistente != null) {
-			return ResponseEntity.status(HttpStatus.OK).body(detentorExistente);
+		if (detentorExistente.isPresent()) {
+			return ResponseEntity.status(HttpStatus.OK).body(detentorExistente.get());
 		}
 
 		for (Endereco item : detentor.getEnderecos()) {
 			enderecoRespository.save(item);
 		}
 
-		MessageDigest md;
-		try {
-			md = MessageDigest.getInstance("MD5");
-			md.update(detentor.getSenha().getBytes(), 0, detentor.getSenha().length());
-			detentor.setSenha(new BigInteger(1, md.digest()).toString(16));
-		} catch (NoSuchAlgorithmException e) {
-			e.printStackTrace();
-		}
+		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+		detentor.setSenha(encoder.encode(detentor.getSenha()));
 
 		Detentor novoDetentor = detentorRepository.save(detentor);
 

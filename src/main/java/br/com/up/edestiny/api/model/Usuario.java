@@ -1,18 +1,53 @@
 package br.com.up.edestiny.api.model;
 
 import java.io.Serializable;
+import java.util.List;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.Table;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
+@Entity
+@Table(name = "usuario")
 public class Usuario implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+
+	@NotNull
+	@Size(min = 3, max = 255)
 	private String nome;
+
+	@NotNull
+	@Size(min = 3, max = 255)
+	@Email
 	private String email;
+
+	@NotNull
+	@Size(min = 50, max = 72)
 	private String senha;
-	private Empresa empresa;
+
+	@Column(name = "foto_perfil")
 	private byte[] fotoPerfil;
+
 	private boolean admin;
+
+	@ManyToMany(fetch = FetchType.EAGER)
+	@JoinTable(name = "usuario_permissao", joinColumns = @JoinColumn(name = "usuario_id"), inverseJoinColumns = @JoinColumn(name = "permissao_id"))
+	private List<Permissao> permissoes;
 
 	public Long getId() {
 		return id;
@@ -46,14 +81,6 @@ public class Usuario implements Serializable {
 		this.senha = senha;
 	}
 
-	public Empresa getEmpresa() {
-		return empresa;
-	}
-
-	public void setEmpresa(Empresa empresa) {
-		this.empresa = empresa;
-	}
-
 	public byte[] getFotoPerfil() {
 		return fotoPerfil;
 	}
@@ -68,6 +95,14 @@ public class Usuario implements Serializable {
 
 	public void setAdmin(boolean admin) {
 		this.admin = admin;
+	}
+
+	public List<Permissao> getPermissoes() {
+		return permissoes;
+	}
+
+	public void setPermissoes(List<Permissao> permissoes) {
+		this.permissoes = permissoes;
 	}
 
 	@Override

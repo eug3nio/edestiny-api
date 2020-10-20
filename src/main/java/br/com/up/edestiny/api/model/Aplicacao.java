@@ -1,40 +1,25 @@
 package br.com.up.edestiny.api.model;
 
 import java.io.Serializable;
-import java.time.LocalDate;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 
 @Entity
-@Table(name = "percurso")
-public class Percurso implements Serializable {
+@Table(name = "aplicacao")
+public class Aplicacao implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-
-	@OneToOne
-	@JoinColumn(name = "coleta_id")
-	@NotNull
-	private Coleta coleta;
-
-	@NotNull
-	@Column(name = "dt_criacao")
-	private LocalDate dtCriacao;
-
-	@NotNull
-	@Column(name = "json_percurso")
-	private String jsonPercurso;
+	private String client;
+	private String senha;
+	private String scopes;
 
 	public Long getId() {
 		return id;
@@ -44,28 +29,28 @@ public class Percurso implements Serializable {
 		this.id = id;
 	}
 
-	public Coleta getColeta() {
-		return coleta;
+	public String getClient() {
+		return client;
 	}
 
-	public void setColeta(Coleta coleta) {
-		this.coleta = coleta;
+	public void setClient(String client) {
+		this.client = client;
 	}
 
-	public LocalDate getDtCriacao() {
-		return dtCriacao;
+	public String getSenha() {
+		return senha;
 	}
 
-	public void setDtCriacao(LocalDate dtCriacao) {
-		this.dtCriacao = dtCriacao;
+	public void setSenha(String senha) {
+		this.senha = senha;
 	}
 
-	public String getJsonPercurso() {
-		return jsonPercurso;
+	public String getScopes() {
+		return scopes;
 	}
 
-	public void setJsonPercurso(String jsonPercurso) {
-		this.jsonPercurso = jsonPercurso;
+	public void setScopes(String scopes) {
+		this.scopes = scopes;
 	}
 
 	@Override
@@ -84,7 +69,7 @@ public class Percurso implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Percurso other = (Percurso) obj;
+		Aplicacao other = (Aplicacao) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;
@@ -92,5 +77,4 @@ public class Percurso implements Serializable {
 			return false;
 		return true;
 	}
-
 }

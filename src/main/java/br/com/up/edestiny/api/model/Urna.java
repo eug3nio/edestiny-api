@@ -3,18 +3,42 @@ package br.com.up.edestiny.api.model;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
 import br.com.up.edestiny.api.model.enums.TipoMedida;
 
+@Entity
+@Table(name = "urna")
 public class Urna implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+
+	@NotNull
+	@Size(min = 3, max = 255)
 	private String detalhamento;
+
+	@Enumerated(EnumType.STRING)
+	@NotNull
 	private TipoMedida tipoMedida;
+
+	@Column(name = "quantidade_atual")
 	private BigDecimal qtdAtual;
+
+	@Column(name = "quantidade_maxima")
 	private BigDecimal qtdMaxima;
-	private Empresa empresa;
 
 	public Long getId() {
 		return id;
@@ -54,14 +78,6 @@ public class Urna implements Serializable {
 
 	public void setQtdMaxima(BigDecimal qtdMaxima) {
 		this.qtdMaxima = qtdMaxima;
-	}
-
-	public Empresa getEmpresa() {
-		return empresa;
-	}
-
-	public void setEmpresa(Empresa empresa) {
-		this.empresa = empresa;
 	}
 
 	@Override
