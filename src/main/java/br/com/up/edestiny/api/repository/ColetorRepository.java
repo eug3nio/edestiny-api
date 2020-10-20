@@ -10,4 +10,6 @@ public interface ColetorRepository extends JpaRepository<Coletor, Long> {
 
 	public Optional<Coletor> findByEmail(String email);
 
+	public Optional<Coletor> findByCnpj(String cnpj);
+
 }
