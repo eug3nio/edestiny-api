@@ -40,7 +40,7 @@ public class ColetaResource implements Serializable {
 		return coletaRepository.findAll();
 	}
 
-	@GetMapping(name = "/{id}")
+	@GetMapping("/{id}")
 	public ResponseEntity<Coleta> getById(@RequestParam Long id) {
 		Optional<Coleta> optColeta = coletaRepository.findById(id);
 		return optColeta.isPresent() ? ResponseEntity.status(HttpStatus.OK).body(optColeta.get())
