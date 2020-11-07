@@ -1,8 +1,10 @@
 package br.com.up.edestiny.api.model;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.List;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -14,6 +16,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 import br.com.up.edestiny.api.model.enums.SituacaoSolicitacao;
 
@@ -38,6 +41,10 @@ public class Solicitacao implements Serializable {
 	@Enumerated(EnumType.STRING)
 	private SituacaoSolicitacao situacao;
 	private String justificativa;
+	
+	@NotNull
+	@Column(name = "dt_solicitacao")
+	private LocalDate dtSolicitacao;
 
 	public Long getId() {
 		return id;
@@ -77,6 +84,14 @@ public class Solicitacao implements Serializable {
 
 	public void setJustificativa(String justificativa) {
 		this.justificativa = justificativa;
+	}
+
+	public LocalDate getDtSolicitacao() {
+		return dtSolicitacao;
+	}
+
+	public void setDtSolicitacao(LocalDate dtSolicitacao) {
+		this.dtSolicitacao = dtSolicitacao;
 	}
 
 	@Override
