@@ -1,0 +1,1 @@
+ALTER TABLE solicitacao ADD COLUMN dt_solicitacao DATE NOT NULL;
