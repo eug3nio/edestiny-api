@@ -9,7 +9,6 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -40,19 +39,22 @@ public class AppUserDetailsService implements UserDetailsService {
 		Optional<Usuario> usuario = usuarioRepository.findByEmail(email);
 
 		if (usuario.isPresent()) {
-			return new User(email, usuario.get().getSenha(), getPermissoes(usuario.get().getPermissoes()));
+			return new UsuarioSistema(usuario.get().getNome(), email, usuario.get().getSenha(), true, true, true, true,
+					getPermissoes(usuario.get().getPermissoes()));
 		}
 
 		Optional<Detentor> detentor = detentorRepository.findByEmail(email);
 
 		if (detentor.isPresent()) {
-			return new User(email, detentor.get().getSenha(), getPermissoes(detentor.get().getPermissoes()));
+			return new UsuarioSistema(detentor.get().getNome(), email, detentor.get().getSenha(), true, true, true,
+					true, getPermissoes(detentor.get().getPermissoes()));
 		}
 
 		Optional<Coletor> coletor = coletorRepository.findByEmail(email);
 
 		if (coletor.isPresent()) {
-			return new User(email, coletor.get().getSenha(), getPermissoes(coletor.get().getPermissoes()));
+			return new UsuarioSistema(coletor.get().getRazaoSocial(), email, coletor.get().getSenha(), true, true, true,
+					true, getPermissoes(coletor.get().getPermissoes()));
 		}
 
 		new UsernameNotFoundException("Usuário e/ou senha incorretos");
