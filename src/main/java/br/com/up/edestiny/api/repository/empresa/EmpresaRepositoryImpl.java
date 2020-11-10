@@ -10,6 +10,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.util.StringUtils;
 
 import br.com.up.edestiny.api.model.Empresa;
+import br.com.up.edestiny.api.repository.dto.EmpresaDTO;
 import br.com.up.edestiny.api.repository.filter.EmpresaFilter;
 
 @SuppressWarnings("unchecked")
@@ -34,6 +35,22 @@ public class EmpresaRepositoryImpl implements EmpresaRepositoryQuery {
 		return new PageImpl<>(q.getResultList(), pageable, total(filter));
 	}
 
+	@Override
+	public Page<EmpresaDTO> resumir(EmpresaFilter filter, Pageable pageable) {
+		StringBuilder sql = new StringBuilder();
+
+		sql.append("SELECT new br.com.up.edestiny.api.repository.dto.EmpresaDTO(e) FROM Empresa e ");
+		sql.append(" WHERE 1=1 ").append(getWhere(filter));
+
+		Query q = manager.createQuery(sql.toString());
+
+		setParameter(q, filter);
+
+		adicionarRestricoesDePaginacao(q, pageable);
+
+		return new PageImpl<>(q.getResultList(), pageable, total(filter));
+	}
+
 	/**
 	 * 
 	 * @param filter
@@ -42,19 +59,19 @@ public class EmpresaRepositoryImpl implements EmpresaRepositoryQuery {
 	private String getWhere(EmpresaFilter filter) {
 		StringBuilder where = new StringBuilder();
 
-		if (StringUtils.isEmpty(filter.getCnpj())) {
+		if (!StringUtils.isEmpty(filter.getCnpj())) {
 			where.append(" AND LOWER(e.cnpj) LIKE :cnpj ");
 		}
 
-		if (StringUtils.isEmpty(filter.getEmail())) {
+		if (!StringUtils.isEmpty(filter.getEmail())) {
 			where.append(" AND LOWER(e.email) LIKE :email ");
 		}
 
-		if (StringUtils.isEmpty(filter.getNomeFantasia())) {
+		if (!StringUtils.isEmpty(filter.getNomeFantasia())) {
 			where.append(" AND LOWER(e.nomeFantasia) LIKE :nomeFantasia ");
 		}
 
-		if (StringUtils.isEmpty(filter.getRazaoSocial())) {
+		if (!StringUtils.isEmpty(filter.getRazaoSocial())) {
 			where.append(" AND LOWER(e.razaoSocial) LIKE :razaoSocial ");
 		}
 
@@ -67,19 +84,19 @@ public class EmpresaRepositoryImpl implements EmpresaRepositoryQuery {
 	 * @param filter
 	 */
 	private void setParameter(Query q, EmpresaFilter filter) {
-		if (StringUtils.isEmpty(filter.getCnpj())) {
+		if (!StringUtils.isEmpty(filter.getCnpj())) {
 			q.setParameter("cnpj", "%" + filter.getCnpj().toLowerCase());
 		}
 
-		if (StringUtils.isEmpty(filter.getEmail())) {
+		if (!StringUtils.isEmpty(filter.getEmail())) {
 			q.setParameter("email", "%" + filter.getEmail().toLowerCase());
 		}
 
-		if (StringUtils.isEmpty(filter.getNomeFantasia())) {
+		if (!StringUtils.isEmpty(filter.getNomeFantasia())) {
 			q.setParameter("nomeFantasia", "%" + filter.getNomeFantasia().toLowerCase());
 		}
 
-		if (StringUtils.isEmpty(filter.getRazaoSocial())) {
+		if (!StringUtils.isEmpty(filter.getRazaoSocial())) {
 			q.setParameter("razaoSocial", "%" + filter.getRazaoSocial().toLowerCase());
 		}
 

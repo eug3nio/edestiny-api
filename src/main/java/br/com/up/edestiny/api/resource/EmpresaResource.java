@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 import br.com.up.edestiny.api.event.RecursoCriadoEvent;
 import br.com.up.edestiny.api.model.Empresa;
 import br.com.up.edestiny.api.repository.EmpresaRepository;
+import br.com.up.edestiny.api.repository.dto.EmpresaDTO;
 import br.com.up.edestiny.api.repository.filter.EmpresaFilter;
 import br.com.up.edestiny.api.service.EmpresaService;
 
@@ -46,6 +47,11 @@ public class EmpresaResource implements Serializable {
 	@GetMapping
 	public Page<Empresa> pesquisar(EmpresaFilter filter, Pageable pageable) {
 		return empresaRepository.filtrar(filter, pageable);
+	}
+
+	@GetMapping(params = "resumo")
+	public Page<EmpresaDTO> resumir(EmpresaFilter filter, Pageable pageable) {
+		return empresaRepository.resumir(filter, pageable);
 	}
 
 	@GetMapping("/{id}")
