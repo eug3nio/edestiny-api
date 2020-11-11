@@ -85,19 +85,19 @@ public class EmpresaRepositoryImpl implements EmpresaRepositoryQuery {
 	 */
 	private void setParameter(Query q, EmpresaFilter filter) {
 		if (!StringUtils.isEmpty(filter.getCnpj())) {
-			q.setParameter("cnpj", "%" + filter.getCnpj().toLowerCase());
+			q.setParameter("cnpj", "%" + filter.getCnpj().toLowerCase() + "%");
 		}
 
 		if (!StringUtils.isEmpty(filter.getEmail())) {
-			q.setParameter("email", "%" + filter.getEmail().toLowerCase());
+			q.setParameter("email", "%" + filter.getEmail().toLowerCase() + "%");
 		}
 
 		if (!StringUtils.isEmpty(filter.getNomeFantasia())) {
-			q.setParameter("nomeFantasia", "%" + filter.getNomeFantasia().toLowerCase());
+			q.setParameter("nomeFantasia", "%" + filter.getNomeFantasia().toLowerCase() + "%");
 		}
 
 		if (!StringUtils.isEmpty(filter.getRazaoSocial())) {
-			q.setParameter("razaoSocial", "%" + filter.getRazaoSocial().toLowerCase());
+			q.setParameter("razaoSocial", "%" + filter.getRazaoSocial().toLowerCase() + "%");
 		}
 
 	}

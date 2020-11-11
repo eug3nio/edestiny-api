@@ -43,6 +43,7 @@ public class Empresa implements Serializable {
 	@NotNull
 	@Size(min = 3, max = 255)
 	@Email
+	@Column(name = "email_empresa")
 	private String email;
 
 	@Column(name = "inscricao_estadual")
