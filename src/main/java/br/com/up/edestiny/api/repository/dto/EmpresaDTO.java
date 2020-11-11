@@ -1,6 +1,9 @@
 package br.com.up.edestiny.api.repository.dto;
 
 import java.io.Serializable;
+import java.text.ParseException;
+
+import javax.swing.text.MaskFormatter;
 
 import br.com.up.edestiny.api.model.Empresa;
 
@@ -18,7 +21,15 @@ public class EmpresaDTO implements Serializable {
 		this.id = empresa.getId();
 		this.razaoSocial = empresa.getRazaoSocial();
 		this.setNomeFantasia(empresa.getNomeFantasia());
-		this.cnpj = empresa.getCnpj();
+		
+		try {
+			MaskFormatter mask = new MaskFormatter("##.###.###/####-##");
+			mask.setValueContainsLiteralCharacters(false);
+			this.cnpj = mask.valueToString(empresa.getCnpj());
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		
 		this.email = empresa.getEmail();
 	}
 

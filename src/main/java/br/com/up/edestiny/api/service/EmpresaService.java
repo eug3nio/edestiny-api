@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +20,12 @@ public class EmpresaService implements Serializable {
 	@Autowired
 	private EmpresaRepository empresaRepository;
 
+	/**
+	 * 
+	 * @param id
+	 * @param empresa
+	 * @return
+	 */
 	public Empresa atualizarEmpresa(Long id, Empresa empresa) {
 		Optional<Empresa> empresaSalva = empresaRepository.findById(id);
 
@@ -28,6 +35,26 @@ public class EmpresaService implements Serializable {
 		} else {
 			throw new EmptyResultDataAccessException(1);
 		}
+	}
+
+	/**
+	 * 
+	 * @param empresa
+	 */
+	public boolean validarExclusao(Optional<Empresa> empresa) {
+		if (empresa.isPresent()) {
+			if (!empresa.get().getUrnas().isEmpty()) {
+				throw new DataIntegrityViolationException("A empresa possui urnas vinculadas.");
+			}
+
+			if (!empresa.get().getUsuarios().isEmpty()) {
+				throw new DataIntegrityViolationException("A empresa possui usuários vinculados.");
+			}
+		} else {
+			throw new EmptyResultDataAccessException(1);
+		}
+		
+		return false;
 	}
 
 }

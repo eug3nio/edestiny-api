@@ -79,7 +79,10 @@ public class EmpresaResource implements Serializable {
 	@DeleteMapping("/{id}")
 	@ResponseStatus(code = HttpStatus.NO_CONTENT)
 	public void removerEmpresa(@PathVariable Long id) {
-		empresaRepository.deleteById(id);
+		Optional<Empresa> empresa = empresaRepository.findById(id);
+		if (empresaService.validarExclusao(empresa)) {
+			empresaRepository.deleteById(id);			
+		}
 	}
 
 	@PutMapping("/{id}")
