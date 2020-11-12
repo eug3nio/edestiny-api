@@ -3,6 +3,7 @@ package br.com.up.edestiny.api.model;
 import java.io.Serializable;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -55,7 +56,7 @@ public class Empresa implements Serializable {
 	@Size(min = 11, max = 15)
 	private String fone;
 
-	@OneToOne
+	@OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
 	@JoinColumn(name = "endereco_id")
 	private Endereco endereco;
 

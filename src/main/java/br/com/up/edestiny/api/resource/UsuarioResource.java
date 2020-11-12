@@ -21,7 +21,9 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.up.edestiny.api.event.RecursoCriadoEvent;
+import br.com.up.edestiny.api.model.Empresa;
 import br.com.up.edestiny.api.model.Usuario;
+import br.com.up.edestiny.api.repository.EmpresaRepository;
 import br.com.up.edestiny.api.repository.UsuarioRepository;
 import br.com.up.edestiny.api.service.UsuarioService;
 
@@ -36,6 +38,9 @@ public class UsuarioResource implements Serializable {
 
 	@Autowired
 	private UsuarioRepository usuarioRepository;
+	
+	@Autowired
+	private EmpresaRepository empresaRepository;
 
 	@Autowired
 	private UsuarioService usuarioService;
@@ -56,6 +61,12 @@ public class UsuarioResource implements Serializable {
 		}
 
 		Usuario novoUsuario = usuarioRepository.save(usuario);
+		
+		Optional<Empresa> empresa = empresaRepository.findById(usuario.getIdEmpresa());
+		if (empresa.isPresent()) {
+			empresa.get().getUsuarios().add(novoUsuario);
+			empresaRepository.save(empresa.get());
+		}
 
 		publisher.publishEvent(new RecursoCriadoEvent(this, response, novoUsuario.getId()));
 

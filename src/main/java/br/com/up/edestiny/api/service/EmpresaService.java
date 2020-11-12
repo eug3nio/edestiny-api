@@ -51,7 +51,7 @@ public class EmpresaService implements Serializable {
 			throw new EmptyResultDataAccessException(1);
 		}
 
-		return false;
+		return true;
 	}
 
 }
