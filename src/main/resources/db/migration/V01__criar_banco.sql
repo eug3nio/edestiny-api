@@ -1,7 +1,12 @@
 CREATE TABLE endereco (
-  id FLOAT NOT NULL AUTO_INCREMENT,
-  longitude VARCHAR(15) NOT NULL,
-  latitude VARCHAR(15) NOT NULL,
+  	id FLOAT NOT NULL AUTO_INCREMENT,
+  	logradouro VARCHAR(255),
+	numero VARCHAR(30),
+	complemento VARCHAR(255),
+	bairro VARCHAR(255),
+	cep VARCHAR(8),
+	cidade VARCHAR(255),
+	estado VARCHAR(50),
   PRIMARY KEY (id)
 ) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8;
 

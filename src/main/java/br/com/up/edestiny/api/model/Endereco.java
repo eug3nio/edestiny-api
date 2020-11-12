@@ -7,8 +7,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
 @Entity
 @Table(name = "endereco")
@@ -19,14 +17,14 @@ public class Endereco implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
-	@NotNull
-	@Size(min = 9, max = 15)
-	private String longitude;
-	
-	@NotNull
-	@Size(min = 9, max = 15)
-	private String latitude;
+
+	private String logradouro;
+	private String numero;
+	private String complemento;
+	private String bairro;
+	private String cidade;
+	private String estado;
+	private String cep;
 
 	public Long getId() {
 		return id;
@@ -36,20 +34,60 @@ public class Endereco implements Serializable {
 		this.id = id;
 	}
 
-	public String getLongitude() {
-		return longitude;
+	public String getLogradouro() {
+		return logradouro;
 	}
 
-	public void setLongitude(String longitude) {
-		this.longitude = longitude;
+	public void setLogradouro(String logradouro) {
+		this.logradouro = logradouro;
 	}
 
-	public String getLatitude() {
-		return latitude;
+	public String getNumero() {
+		return numero;
 	}
 
-	public void setLatitude(String latitude) {
-		this.latitude = latitude;
+	public void setNumero(String numero) {
+		this.numero = numero;
+	}
+
+	public String getComplemento() {
+		return complemento;
+	}
+
+	public void setComplemento(String complemento) {
+		this.complemento = complemento;
+	}
+
+	public String getBairro() {
+		return bairro;
+	}
+
+	public void setBairro(String bairro) {
+		this.bairro = bairro;
+	}
+
+	public String getCidade() {
+		return cidade;
+	}
+
+	public void setCidade(String cidade) {
+		this.cidade = cidade;
+	}
+
+	public String getEstado() {
+		return estado;
+	}
+
+	public void setEstado(String estado) {
+		this.estado = estado;
+	}
+
+	public String getCep() {
+		return cep;
+	}
+
+	public void setCep(String cep) {
+		this.cep = cep;
 	}
 
 	@Override
