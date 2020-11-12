@@ -47,13 +47,10 @@ public class EmpresaService implements Serializable {
 				throw new DataIntegrityViolationException("A empresa possui urnas vinculadas.");
 			}
 
-			if (!empresa.get().getUsuarios().isEmpty()) {
-				throw new DataIntegrityViolationException("A empresa possui usuários vinculados.");
-			}
 		} else {
 			throw new EmptyResultDataAccessException(1);
 		}
-		
+
 		return false;
 	}
 

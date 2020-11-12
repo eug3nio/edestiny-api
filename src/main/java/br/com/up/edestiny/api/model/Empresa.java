@@ -13,6 +13,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.validation.Valid;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -59,10 +60,12 @@ public class Empresa implements Serializable {
 	private Endereco endereco;
 
 	@OneToMany
+	@Valid
 	@JoinTable(name = "empresa_urna", joinColumns = @JoinColumn(name = "empresa_id"), inverseJoinColumns = @JoinColumn(name = "urna_id"))
 	private List<Urna> urnas;
 
 	@OneToMany
+	@Valid
 	@JoinTable(name = "empresa_usuario", joinColumns = @JoinColumn(name = "empresa_id"), inverseJoinColumns = @JoinColumn(name = "usuario_id"))
 	private List<Usuario> usuarios;
 
