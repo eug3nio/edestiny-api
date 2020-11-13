@@ -19,4 +19,19 @@ public enum TipoMedida {
 	public String getDescricao() {
 		return descricao;
 	}
+
+	/**
+	 * 
+	 * @param codigo
+	 * @return
+	 */
+	public static TipoMedida findByCodigo(Integer codigo) {
+		for (TipoMedida item : TipoMedida.values()) {
+			if (item.getCodigo() == codigo) {
+				return item;
+			}
+		}
+
+		return null;
+	}
 }

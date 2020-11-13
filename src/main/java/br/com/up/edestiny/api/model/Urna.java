@@ -11,6 +11,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -39,6 +40,9 @@ public class Urna implements Serializable {
 
 	@Column(name = "quantidade_maxima")
 	private BigDecimal qtdMaxima;
+
+	@Transient
+	private Long idEmpresa;
 
 	public Long getId() {
 		return id;
@@ -78,6 +82,14 @@ public class Urna implements Serializable {
 
 	public void setQtdMaxima(BigDecimal qtdMaxima) {
 		this.qtdMaxima = qtdMaxima;
+	}
+
+	public Long getIdEmpresa() {
+		return idEmpresa;
+	}
+
+	public void setIdEmpresa(Long idEmpresa) {
+		this.idEmpresa = idEmpresa;
 	}
 
 	@Override
