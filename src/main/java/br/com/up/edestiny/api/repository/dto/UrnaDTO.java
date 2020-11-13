@@ -13,6 +13,7 @@ public class UrnaDTO implements Serializable {
 	private String tipoMedida;
 	private BigDecimal qtdAtual;
 	private BigDecimal qtdMaxima;
+	private String empresa;
 
 	public UrnaDTO(Urna urna) {
 		this.detalhamento = urna.getDetalhamento();
@@ -51,5 +52,13 @@ public class UrnaDTO implements Serializable {
 
 	public void setQtdMaxima(BigDecimal qtdMaxima) {
 		this.qtdMaxima = qtdMaxima;
+	}
+
+	public String getEmpresa() {
+		return empresa;
+	}
+
+	public void setEmpresa(String empresa) {
+		this.empresa = empresa;
 	}
 }
