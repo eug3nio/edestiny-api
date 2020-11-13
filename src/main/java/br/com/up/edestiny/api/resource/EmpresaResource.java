@@ -8,6 +8,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -40,7 +41,7 @@ public class EmpresaResource implements Serializable {
 
 	@Autowired
 	private EmpresaRepository empresaRepository;
-	
+
 	@Autowired
 	private EnderecoRespository enderecoRepository;
 
@@ -61,6 +62,17 @@ public class EmpresaResource implements Serializable {
 	@GetMapping(params = "resumo")
 	public Page<EmpresaDTO> resumir(EmpresaFilter filter, Pageable pageable) {
 		return empresaRepository.resumir(filter, pageable);
+	}
+
+	@GetMapping("/obterPorUsuarioEmail/{email}")
+	public ResponseEntity<Empresa> obterPorUsuarioId(@PathVariable String email) {
+		Optional<Usuario> usuario = usuarioRepository.findByEmail(email);
+		if (usuario.isPresent()) {
+			Empresa opt = empresaRepository.findByUsuarioId(usuario.get().getId());
+			return opt != null ? ResponseEntity.ok(opt) : ResponseEntity.notFound().build();
+		}
+
+		throw new EmptyResultDataAccessException(1);
 	}
 
 	@GetMapping("/{id}")

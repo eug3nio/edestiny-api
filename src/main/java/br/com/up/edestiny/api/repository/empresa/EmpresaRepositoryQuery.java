@@ -10,5 +10,8 @@ import br.com.up.edestiny.api.repository.filter.EmpresaFilter;
 public interface EmpresaRepositoryQuery {
 
 	public Page<Empresa> filtrar(EmpresaFilter filter, Pageable pageable);
+
 	public Page<EmpresaDTO> resumir(EmpresaFilter filter, Pageable pageable);
+
+	public Empresa findByUsuarioId(Long id);
 }

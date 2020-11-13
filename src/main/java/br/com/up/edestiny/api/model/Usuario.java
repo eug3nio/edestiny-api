@@ -44,7 +44,7 @@ public class Usuario implements Serializable {
 	@Column(name = "foto_perfil")
 	private byte[] fotoPerfil;
 
-	private boolean admin;
+	private Boolean admin;
 
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "usuario_permissao", joinColumns = @JoinColumn(name = "usuario_id"), inverseJoinColumns = @JoinColumn(name = "permissao_id"))
@@ -93,11 +93,11 @@ public class Usuario implements Serializable {
 		this.fotoPerfil = fotoPerfil;
 	}
 
-	public boolean isAdmin() {
+	public Boolean isAdmin() {
 		return admin;
 	}
 
-	public void setAdmin(boolean admin) {
+	public void setAdmin(Boolean admin) {
 		this.admin = admin;
 	}
 

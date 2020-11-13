@@ -136,4 +136,19 @@ public class EmpresaRepositoryImpl implements EmpresaRepositoryQuery {
 		q.setMaxResults(totalRegistrosPorPagina);
 	}
 
+	@Override
+	public Empresa findByUsuarioId(Long id) {
+		StringBuilder sql = new StringBuilder();
+
+		sql.append("SELECT * FROM empresa e ");
+		sql.append(" INNER JOIN empresa_usuario eu ON e.id = eu.empresa_id ");
+		sql.append(" WHERE eu.usuario_id = :id ");
+
+		Query q = manager.createNativeQuery(sql.toString(), Empresa.class);
+
+		q.setParameter("id", id);
+
+		return (Empresa) q.getSingleResult();
+	}
+
 }
