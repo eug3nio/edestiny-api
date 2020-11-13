@@ -49,7 +49,7 @@ public class Empresa implements Serializable {
 	private String email;
 
 	@Column(name = "inscricao_estadual")
-	@Size(min = 12, max = 12)
+	@Size(max = 12)
 	private String inscricaoEstadual;
 
 	@NotNull

@@ -39,21 +39,21 @@ public class AppUserDetailsService implements UserDetailsService {
 		Optional<Usuario> usuario = usuarioRepository.findByEmail(email);
 
 		if (usuario.isPresent()) {
-			return new UsuarioSistema(usuario.get().getNome(), email, usuario.get().getSenha(), true, true, true, true,
+			return new UsuarioSistema(usuario.get().getNome(), usuario.get().isAdmin(), email, usuario.get().getSenha(), true, true, true, true,
 					getPermissoes(usuario.get().getPermissoes()));
 		}
 
 		Optional<Detentor> detentor = detentorRepository.findByEmail(email);
 
 		if (detentor.isPresent()) {
-			return new UsuarioSistema(detentor.get().getNome(), email, detentor.get().getSenha(), true, true, true,
+			return new UsuarioSistema(detentor.get().getNome(), usuario.get().isAdmin(), email, detentor.get().getSenha(), true, true, true,
 					true, getPermissoes(detentor.get().getPermissoes()));
 		}
 
 		Optional<Coletor> coletor = coletorRepository.findByEmail(email);
 
 		if (coletor.isPresent()) {
-			return new UsuarioSistema(coletor.get().getRazaoSocial(), email, coletor.get().getSenha(), true, true, true,
+			return new UsuarioSistema(coletor.get().getRazaoSocial(), usuario.get().isAdmin(), email, coletor.get().getSenha(), true, true, true,
 					true, getPermissoes(coletor.get().getPermissoes()));
 		}
 
@@ -61,7 +61,7 @@ public class AppUserDetailsService implements UserDetailsService {
 		return null;
 	}
 
-	/**
+	/**	
 	 * 
 	 * @param list
 	 * @return

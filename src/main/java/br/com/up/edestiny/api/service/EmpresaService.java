@@ -30,7 +30,7 @@ public class EmpresaService implements Serializable {
 		Optional<Empresa> empresaSalva = empresaRepository.findById(id);
 
 		if (empresaSalva.isPresent()) {
-			BeanUtils.copyProperties(empresa, empresaSalva, "id");
+			BeanUtils.copyProperties(empresa, empresaSalva.get(), "id");
 			return empresaRepository.save(empresaSalva.get());
 		} else {
 			throw new EmptyResultDataAccessException(1);
