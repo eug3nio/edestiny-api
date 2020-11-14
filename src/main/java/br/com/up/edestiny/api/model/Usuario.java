@@ -18,6 +18,8 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 @Entity
 @Table(name = "usuario")
 public class Usuario implements Serializable {
@@ -48,6 +50,7 @@ public class Usuario implements Serializable {
 
 	@ManyToOne
 	@JoinColumn(name = "empresa_id", referencedColumnName = "id")
+	@JsonIgnoreProperties("usuarios")
 	private Empresa empresa;
 
 	@ManyToMany(fetch = FetchType.EAGER)

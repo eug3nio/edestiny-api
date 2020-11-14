@@ -29,7 +29,7 @@ public class UrnaService implements Serializable {
 		Optional<Urna> urnaSalvo = urnaRepository.findById(id);
 
 		if (urnaSalvo.isPresent()) {
-			BeanUtils.copyProperties(urna, urnaSalvo, "id");
+			BeanUtils.copyProperties(urna, urnaSalvo.get(), "id", "empresa");
 			return urnaRepository.save(urnaSalvo.get());
 		} else {
 			throw new EmptyResultDataAccessException(1);

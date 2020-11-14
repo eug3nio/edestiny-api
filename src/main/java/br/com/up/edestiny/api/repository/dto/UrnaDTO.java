@@ -9,6 +9,7 @@ public class UrnaDTO implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
+	private Long id;
 	private String detalhamento;
 	private String tipoMedida;
 	private BigDecimal qtdAtual;
@@ -16,10 +17,20 @@ public class UrnaDTO implements Serializable {
 	private String empresa;
 
 	public UrnaDTO(Urna urna) {
+		this.id = urna.getId();
 		this.detalhamento = urna.getDetalhamento();
 		this.tipoMedida = urna.getTipoMedida().getDescricao();
 		this.qtdAtual = urna.getQtdAtual();
 		this.qtdMaxima = urna.getQtdMaxima();
+		this.empresa = urna.getEmpresa().getRazaoSocial();
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 	public String getDetalhamento() {

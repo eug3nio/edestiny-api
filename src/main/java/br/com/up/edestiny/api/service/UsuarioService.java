@@ -29,7 +29,7 @@ public class UsuarioService implements Serializable {
 		Optional<Usuario> usuarioSalvo = usuarioRepository.findById(id);
 
 		if (usuarioSalvo.isPresent()) {
-			BeanUtils.copyProperties(usuario, usuarioSalvo, "id");
+			BeanUtils.copyProperties(usuario, usuarioSalvo.get(), "id", "empresa");
 			return usuarioRepository.save(usuarioSalvo.get());
 		} else {
 			throw new EmptyResultDataAccessException(1);

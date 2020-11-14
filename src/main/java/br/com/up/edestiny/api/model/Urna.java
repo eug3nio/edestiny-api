@@ -16,6 +16,8 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import br.com.up.edestiny.api.model.enums.TipoMedida;
 
 @Entity
@@ -44,6 +46,7 @@ public class Urna implements Serializable {
 
 	@ManyToOne
 	@JoinColumn(name = "empresa_id", referencedColumnName = "id")
+	@JsonIgnoreProperties("urnas")
 	private Empresa empresa;
 
 	public Long getId() {
