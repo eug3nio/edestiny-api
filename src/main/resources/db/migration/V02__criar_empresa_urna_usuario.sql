@@ -17,14 +17,9 @@ CREATE TABLE urna (
   tipo_medida VARCHAR(255) NOT NULL,
   quantidade_atual DOUBLE(10,3) NOT NULL,
   quantidade_maxima DOUBLE(10,3) NOT NULL,
-  PRIMARY KEY (id)
-) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8;
-
-CREATE TABLE empresa_urna (
-	empresa_id FLOAT NOT NULL,
-	urna_id FLOAT NOT NULL,
-	FOREIGN KEY (empresa_id) REFERENCES empresa(id),
-	FOREIGN KEY (urna_id) REFERENCES urna(id)
+  empresa_id FLOAT NOT NULL,
+  PRIMARY KEY (id),
+  FOREIGN KEY (empresa_id) REFERENCES empresa(id)
 ) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8;
 
 CREATE TABLE usuario (
@@ -34,15 +29,11 @@ CREATE TABLE usuario (
   senha VARCHAR(72) NOT NULL,
   foto_perfil LONGBLOB,
   admin BOOLEAN NOT NULL,
-  PRIMARY KEY (id)
+  empresa_id FLOAT NOT NULL,
+  PRIMARY KEY (id),
+  FOREIGN KEY (empresa_id) REFERENCES empresa(id)
 ) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8;
 
-CREATE TABLE empresa_usuario (
-	empresa_id FLOAT NOT NULL,
-	usuario_id FLOAT NOT NULL,
-	FOREIGN KEY (empresa_id) REFERENCES empresa(id),
-	FOREIGN KEY (usuario_id) REFERENCES usuario(id)
-) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8;
 
 CREATE TABLE controle_urna (
   id FLOAT NOT NULL AUTO_INCREMENT,

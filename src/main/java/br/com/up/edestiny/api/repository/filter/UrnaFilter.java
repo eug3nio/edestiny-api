@@ -7,7 +7,7 @@ public class UrnaFilter implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private String detalhamento;
-	private Integer tipoMedida;
+	private String tipoMedida;
 
 	public String getDetalhamento() {
 		return detalhamento;
@@ -17,11 +17,11 @@ public class UrnaFilter implements Serializable {
 		this.detalhamento = detalhamento;
 	}
 
-	public Integer getTipoMedida() {
+	public String getTipoMedida() {
 		return tipoMedida;
 	}
 
-	public void setTipoMedida(Integer tipoMedida) {
+	public void setTipoMedida(String tipoMedida) {
 		this.tipoMedida = tipoMedida;
 	}
 }

@@ -23,9 +23,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.up.edestiny.api.event.RecursoCriadoEvent;
-import br.com.up.edestiny.api.model.Empresa;
 import br.com.up.edestiny.api.model.Urna;
-import br.com.up.edestiny.api.repository.EmpresaRepository;
 import br.com.up.edestiny.api.repository.UrnaRepository;
 import br.com.up.edestiny.api.repository.dto.UrnaDTO;
 import br.com.up.edestiny.api.repository.filter.UrnaFilter;
@@ -42,9 +40,6 @@ public class UrnaResource implements Serializable {
 
 	@Autowired
 	private UrnaRepository urnaRepository;
-
-	@Autowired
-	private EmpresaRepository empresaRepository;
 
 	@Autowired
 	private UrnaService urnaService;
@@ -70,14 +65,7 @@ public class UrnaResource implements Serializable {
 	public ResponseEntity<Urna> novaUrna(@Valid @RequestBody Urna urna, HttpServletResponse response) {
 		Urna novaUrna = urnaRepository.save(urna);
 
-		Optional<Empresa> empresa = empresaRepository.findById(urna.getIdEmpresa());
-		if (empresa.isPresent()) {
-			empresa.get().getUrnas().add(novaUrna);
-			empresaRepository.save(empresa.get());
-		}
-
 		publisher.publishEvent(new RecursoCriadoEvent(this, response, novaUrna.getId()));
-
 		return ResponseEntity.status(HttpStatus.CREATED).body(novaUrna);
 	}
 

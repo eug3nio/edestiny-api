@@ -10,7 +10,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -18,6 +17,8 @@ import javax.validation.Valid;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 @Table(name = "empresa")
@@ -60,14 +61,14 @@ public class Empresa implements Serializable {
 	@JoinColumn(name = "endereco_id")
 	private Endereco endereco;
 
-	@OneToMany
 	@Valid
-	@JoinTable(name = "empresa_urna", joinColumns = @JoinColumn(name = "empresa_id"), inverseJoinColumns = @JoinColumn(name = "urna_id"))
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "empresa", orphanRemoval = true)
+	@JsonIgnoreProperties("empresa")
 	private List<Urna> urnas;
 
-	@OneToMany
 	@Valid
-	@JoinTable(name = "empresa_usuario", joinColumns = @JoinColumn(name = "empresa_id"), inverseJoinColumns = @JoinColumn(name = "usuario_id"))
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "empresa", orphanRemoval = true)
+	@JsonIgnoreProperties("empresa")
 	private List<Usuario> usuarios;
 
 	public Long getId() {

@@ -22,9 +22,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.up.edestiny.api.event.RecursoCriadoEvent;
-import br.com.up.edestiny.api.model.Empresa;
 import br.com.up.edestiny.api.model.Usuario;
-import br.com.up.edestiny.api.repository.EmpresaRepository;
 import br.com.up.edestiny.api.repository.UsuarioRepository;
 import br.com.up.edestiny.api.service.UsuarioService;
 
@@ -39,9 +37,6 @@ public class UsuarioResource implements Serializable {
 
 	@Autowired
 	private UsuarioRepository usuarioRepository;
-	
-	@Autowired
-	private EmpresaRepository empresaRepository;
 
 	@Autowired
 	private UsuarioService usuarioService;
@@ -57,24 +52,14 @@ public class UsuarioResource implements Serializable {
 	public ResponseEntity<Usuario> novoUsuario(@Valid @RequestBody Usuario usuario, HttpServletResponse response) {
 		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 		usuario.setSenha(encoder.encode(usuario.getSenha()));
-		
-		
-		Optional<Usuario> optUsuario = usuarioRepository.findByEmail(usuario.getEmail());
 
+		Optional<Usuario> optUsuario = usuarioRepository.findByEmail(usuario.getEmail());
 		if (optUsuario.isPresent()) {
 			return ResponseEntity.status(HttpStatus.OK).body(optUsuario.get());
 		}
 
 		Usuario novoUsuario = usuarioRepository.save(usuario);
-		
-		Optional<Empresa> empresa = empresaRepository.findById(usuario.getIdEmpresa());
-		if (empresa.isPresent()) {
-			empresa.get().getUsuarios().add(novoUsuario);
-			empresaRepository.save(empresa.get());
-		}
-
 		publisher.publishEvent(new RecursoCriadoEvent(this, response, novoUsuario.getId()));
-
 		return ResponseEntity.status(HttpStatus.CREATED).body(novoUsuario);
 	}
 

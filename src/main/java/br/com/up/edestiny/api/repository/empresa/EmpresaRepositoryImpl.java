@@ -1,5 +1,7 @@
 package br.com.up.edestiny.api.repository.empresa;
 
+import java.util.List;
+
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
@@ -85,19 +87,19 @@ public class EmpresaRepositoryImpl implements EmpresaRepositoryQuery {
 	 */
 	private void setParameter(Query q, EmpresaFilter filter) {
 		if (!StringUtils.isEmpty(filter.getCnpj())) {
-			q.setParameter("cnpj", "%" + filter.getCnpj().toLowerCase() + "%");
+			q.setParameter("cnpj", filter.getCnpj().toLowerCase() + "%");
 		}
 
 		if (!StringUtils.isEmpty(filter.getEmail())) {
-			q.setParameter("email", "%" + filter.getEmail().toLowerCase() + "%");
+			q.setParameter("email", filter.getEmail().toLowerCase() + "%");
 		}
 
 		if (!StringUtils.isEmpty(filter.getNomeFantasia())) {
-			q.setParameter("nomeFantasia", "%" + filter.getNomeFantasia().toLowerCase() + "%");
+			q.setParameter("nomeFantasia", filter.getNomeFantasia().toLowerCase() + "%");
 		}
 
 		if (!StringUtils.isEmpty(filter.getRazaoSocial())) {
-			q.setParameter("razaoSocial", "%" + filter.getRazaoSocial().toLowerCase() + "%");
+			q.setParameter("razaoSocial", filter.getRazaoSocial().toLowerCase() + "%");
 		}
 
 	}
@@ -137,18 +139,17 @@ public class EmpresaRepositoryImpl implements EmpresaRepositoryQuery {
 	}
 
 	@Override
-	public Empresa findByUsuarioId(Long id) {
+	public List<Empresa> listByRazaoSocial(String razaoSocial) {
 		StringBuilder sql = new StringBuilder();
 
-		sql.append("SELECT * FROM empresa e ");
-		sql.append(" INNER JOIN empresa_usuario eu ON e.id = eu.empresa_id ");
-		sql.append(" WHERE eu.usuario_id = :id ");
+		sql.append("SELECT e FROM Empresa e ");
+		sql.append(" WHERE LOWER(e.razaoSocial)	LIKE :razaoSocial ");
 
-		Query q = manager.createNativeQuery(sql.toString(), Empresa.class);
+		Query q = manager.createQuery(sql.toString());
 
-		q.setParameter("id", id);
+		q.setParameter("razaoSocial", razaoSocial.toLowerCase() + "%");
 
-		return (Empresa) q.getSingleResult();
+		return q.getResultList();
 	}
 
 }

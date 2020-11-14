@@ -1,5 +1,7 @@
 package br.com.up.edestiny.api.repository.empresa;
 
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -12,6 +14,6 @@ public interface EmpresaRepositoryQuery {
 	public Page<Empresa> filtrar(EmpresaFilter filter, Pageable pageable);
 
 	public Page<EmpresaDTO> resumir(EmpresaFilter filter, Pageable pageable);
-
-	public Empresa findByUsuarioId(Long id);
+	
+	public List<Empresa> listByRazaoSocial(String razaoSocial);
 }

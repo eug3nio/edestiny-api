@@ -64,7 +64,7 @@ public class UrnaRepositoryImpl implements UrnaRepositoryQuery {
 			where.append(" AND LOWER(u.detalhamento) LIKE :detalhamento ");
 		}
 
-		if (filter.getTipoMedida() != null) {
+		if (!StringUtils.isEmpty(filter.getTipoMedida())) {
 			where.append(" AND u.tipoMedida = :tipoMedida ");
 		}
 
@@ -78,11 +78,11 @@ public class UrnaRepositoryImpl implements UrnaRepositoryQuery {
 	 */
 	private void setParameter(Query q, UrnaFilter filter) {
 		if (!StringUtils.isEmpty(filter.getDetalhamento())) {
-			q.setParameter("detalhamento", "%" + filter.getDetalhamento() + "%");
+			q.setParameter("detalhamento", filter.getDetalhamento() + "%");
 		}
 
-		if (filter.getTipoMedida() != null) {
-			TipoMedida tm = TipoMedida.findByCodigo(filter.getTipoMedida());
+		if (!StringUtils.isEmpty(filter.getTipoMedida())) {
+			TipoMedida tm = TipoMedida.findByCodigo(Integer.parseInt(filter.getTipoMedida()));
 			q.setParameter("tipoMedida", tm);
 		}
 

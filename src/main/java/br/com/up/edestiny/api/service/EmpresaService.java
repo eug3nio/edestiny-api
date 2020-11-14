@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 
 import br.com.up.edestiny.api.model.Empresa;
 import br.com.up.edestiny.api.repository.EmpresaRepository;
+import br.com.up.edestiny.api.repository.UrnaRepository;
+import br.com.up.edestiny.api.repository.UsuarioRepository;
 
 @Service
 public class EmpresaService implements Serializable {
@@ -19,6 +21,12 @@ public class EmpresaService implements Serializable {
 
 	@Autowired
 	private EmpresaRepository empresaRepository;
+	
+	@Autowired
+	private UrnaRepository urnaRepository;
+	
+	@Autowired
+	private UsuarioRepository usuarioRepository;
 
 	/**
 	 * 
@@ -30,7 +38,16 @@ public class EmpresaService implements Serializable {
 		Optional<Empresa> empresaSalva = empresaRepository.findById(id);
 
 		if (empresaSalva.isPresent()) {
-			BeanUtils.copyProperties(empresa, empresaSalva.get(), "id");
+			empresaSalva.get().getUrnas().clear();
+			empresaSalva.get().getUrnas().addAll(urnaRepository.findAllByEmpresa(empresaSalva.get()));
+			empresaSalva.get().getUrnas().forEach(it -> it.setEmpresa(empresaSalva.get()));
+			
+			empresaSalva.get().getUsuarios().clear();
+			empresaSalva.get().getUsuarios().addAll(usuarioRepository.findAllByEmpresa(empresaSalva.get()));
+			empresaSalva.get().getUsuarios().forEach(it -> it.setEmpresa(empresaSalva.get()));
+			
+
+			BeanUtils.copyProperties(empresa, empresaSalva.get(), "id", "urnas", "usuarios");
 			return empresaRepository.save(empresaSalva.get());
 		} else {
 			throw new EmptyResultDataAccessException(1);

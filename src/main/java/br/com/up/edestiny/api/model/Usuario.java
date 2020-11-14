@@ -12,8 +12,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -46,12 +46,13 @@ public class Usuario implements Serializable {
 
 	private Boolean admin;
 
+	@ManyToOne
+	@JoinColumn(name = "empresa_id", referencedColumnName = "id")
+	private Empresa empresa;
+
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "usuario_permissao", joinColumns = @JoinColumn(name = "usuario_id"), inverseJoinColumns = @JoinColumn(name = "permissao_id"))
 	private List<Permissao> permissoes;
-	
-	@Transient
-	private Long idEmpresa;
 
 	public Long getId() {
 		return id;
@@ -93,7 +94,15 @@ public class Usuario implements Serializable {
 		this.fotoPerfil = fotoPerfil;
 	}
 
-	public Boolean isAdmin() {
+	public Empresa getEmpresa() {
+		return empresa;
+	}
+
+	public void setEmpresa(Empresa empresa) {
+		this.empresa = empresa;
+	}
+
+	public Boolean getAdmin() {
 		return admin;
 	}
 
@@ -107,14 +116,6 @@ public class Usuario implements Serializable {
 
 	public void setPermissoes(List<Permissao> permissoes) {
 		this.permissoes = permissoes;
-	}
-
-	public Long getIdEmpresa() {
-		return idEmpresa;
-	}
-
-	public void setIdEmpresa(Long idEmpresa) {
-		this.idEmpresa = idEmpresa;
 	}
 
 	@Override

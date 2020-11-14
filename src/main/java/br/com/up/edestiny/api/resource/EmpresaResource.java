@@ -1,6 +1,7 @@
 package br.com.up.edestiny.api.resource;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Optional;
 
 import javax.servlet.http.HttpServletResponse;
@@ -54,6 +55,11 @@ public class EmpresaResource implements Serializable {
 	@Autowired
 	private EmpresaService empresaService;
 
+	@GetMapping("/findByRazaoSocial/{razaoSocial}")
+	public List<Empresa> findByRazaoSocial(@PathVariable String razaoSocial) {
+		return empresaRepository.listByRazaoSocial(razaoSocial);
+	}
+
 	@GetMapping
 	public Page<Empresa> pesquisar(EmpresaFilter filter, Pageable pageable) {
 		return empresaRepository.filtrar(filter, pageable);
@@ -68,8 +74,8 @@ public class EmpresaResource implements Serializable {
 	public ResponseEntity<Empresa> obterPorUsuarioId(@PathVariable String email) {
 		Optional<Usuario> usuario = usuarioRepository.findByEmail(email);
 		if (usuario.isPresent()) {
-			Empresa opt = empresaRepository.findByUsuarioId(usuario.get().getId());
-			return opt != null ? ResponseEntity.ok(opt) : ResponseEntity.notFound().build();
+			return usuario.get().getEmpresa() != null ? ResponseEntity.ok(usuario.get().getEmpresa())
+					: ResponseEntity.notFound().build();
 		}
 
 		throw new EmptyResultDataAccessException(1);
@@ -91,6 +97,8 @@ public class EmpresaResource implements Serializable {
 		}
 
 		enderecoRepository.save(empresa.getEndereco());
+		empresa.getUrnas().forEach(it -> it.setEmpresa(empresa));
+		empresa.getUsuarios().forEach(it -> it.setEmpresa(empresa));
 		Empresa novaEmpresa = empresaRepository.save(empresa);
 
 		publisher.publishEvent(new RecursoCriadoEvent(this, response, novaEmpresa.getId()));
