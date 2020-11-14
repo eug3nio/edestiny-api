@@ -50,7 +50,7 @@ public class DetentorResource implements Serializable {
 		return detentorRepository.findAll();
 	}
 
-	@PostMapping
+	@PostMapping("/novoDetentor")
 	@ResponseStatus(code = HttpStatus.CREATED)
 	public ResponseEntity<Detentor> novoDetentor(@Valid @RequestBody Detentor detentor, HttpServletResponse response) {
 		Optional<Detentor> detentorExistente = detentorRepository.findByEmail(detentor.getEmail());
