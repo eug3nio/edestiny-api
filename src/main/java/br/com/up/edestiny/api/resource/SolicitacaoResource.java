@@ -1,6 +1,9 @@
 package br.com.up.edestiny.api.resource;
 
 import java.io.Serializable;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,10 +25,12 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.up.edestiny.api.event.RecursoCriadoEvent;
+import br.com.up.edestiny.api.model.Categoria;
 import br.com.up.edestiny.api.model.Detentor;
 import br.com.up.edestiny.api.model.Residuo;
 import br.com.up.edestiny.api.model.Solicitacao;
 import br.com.up.edestiny.api.model.enums.SituacaoSolicitacao;
+import br.com.up.edestiny.api.repository.CategoriaRepository;
 import br.com.up.edestiny.api.repository.DetentorRepository;
 import br.com.up.edestiny.api.repository.ResiduoRepository;
 import br.com.up.edestiny.api.repository.SolicitacaoRepository;
@@ -41,6 +46,9 @@ public class SolicitacaoResource implements Serializable {
 
 	@Autowired
 	private DetentorRepository detentorRepository;
+	
+	@Autowired
+	private CategoriaRepository categoriaRepository;
 
 	@Autowired
 	private ResiduoRepository residuoRepository;
@@ -65,9 +73,22 @@ public class SolicitacaoResource implements Serializable {
 			solicitacao.setSolicitante(detentor.get());
 		}
 
+		List<Residuo> residuos = new ArrayList<>();
 		for (Residuo item : solicitacao.getResiduos()) {
-			residuoRepository.save(item);
+			Optional<Categoria> categoria = categoriaRepository.findByDescricao(item.getCategoria().getDescricao());
+			if (!categoria.isPresent()) {
+				throw new EmptyResultDataAccessException(1);
+			} else {
+				item.setCategoria(categoria.get());
+			}
+			residuos.add(residuoRepository.save(item));
 		}
+		
+		solicitacao.setResiduos(residuos);
+		
+		ZoneId zoneId = ZoneId.of("GMT");
+		LocalDate dtSolicitacao = LocalDate.now(zoneId);
+		solicitacao.setDtSolicitacao(dtSolicitacao);
 
 		Solicitacao novaSolicitacao = solicitacaoRepository.save(solicitacao);
 

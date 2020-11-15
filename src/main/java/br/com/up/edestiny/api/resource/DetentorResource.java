@@ -49,6 +49,17 @@ public class DetentorResource implements Serializable {
 	public List<Detentor> listar() {
 		return detentorRepository.findAll();
 	}
+	
+	@GetMapping(params = "findDetentorByEmail")
+	public ResponseEntity<Detentor> findDetentorByEmail(String email, HttpServletResponse response) {
+		Optional<Detentor> detentorExistente = detentorRepository.findByEmail(email);
+
+		if (detentorExistente.isPresent()) {
+			return ResponseEntity.status(HttpStatus.OK).body(detentorExistente.get());
+		}else {
+			throw new EmptyResultDataAccessException(1);
+		}
+	}
 
 	@PostMapping("/novoDetentor")
 	@ResponseStatus(code = HttpStatus.CREATED)

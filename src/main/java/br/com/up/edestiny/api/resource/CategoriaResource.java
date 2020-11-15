@@ -52,6 +52,17 @@ public class CategoriaResource implements Serializable {
 
 		return ResponseEntity.status(HttpStatus.CREATED).body(novaCategoria);
 	}
+	
+	@GetMapping(params = "findCategoriaByDescricao")
+	public ResponseEntity<Categoria> findDetentorByDescricao(String descricao, HttpServletResponse response) {
+		Optional<Categoria> cateoriaExistente = categoriaRepository.findByDescricao(descricao);
+
+		if (cateoriaExistente.isPresent()) {
+			return ResponseEntity.status(HttpStatus.OK).body(cateoriaExistente.get());
+		}else {
+			throw new EmptyResultDataAccessException(1);
+		}
+	}
 
 	@PutMapping("/{id}/ativo")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
