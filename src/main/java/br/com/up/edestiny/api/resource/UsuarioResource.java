@@ -1,6 +1,8 @@
 package br.com.up.edestiny.api.resource;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import javax.servlet.http.HttpServletResponse;
@@ -8,6 +10,8 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -21,8 +25,11 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.up.edestiny.api.event.RecursoCriadoEvent;
+import br.com.up.edestiny.api.model.Urna;
 import br.com.up.edestiny.api.model.Usuario;
 import br.com.up.edestiny.api.repository.UsuarioRepository;
+import br.com.up.edestiny.api.repository.dto.UsuarioDTO;
+import br.com.up.edestiny.api.repository.filter.UsuarioFilter;
 import br.com.up.edestiny.api.service.UsuarioService;
 
 @RestController
@@ -40,10 +47,33 @@ public class UsuarioResource implements Serializable {
 	@Autowired
 	private UsuarioService usuarioService;
 
+	@GetMapping
+	public Page<Usuario> pesquisar(UsuarioFilter filter, Pageable pageable) {
+		return usuarioRepository.filtrar(filter, pageable);
+	}
+
+	@GetMapping(params = "resumo")
+	public Page<UsuarioDTO> resumir(UsuarioFilter filter, Pageable pageable) {
+		return usuarioRepository.resumir(filter, pageable);
+	}
+
 	@GetMapping("/{id}")
 	public ResponseEntity<Usuario> obterPorId(@PathVariable Long id) {
 		Optional<Usuario> opt = usuarioRepository.findById(id);
 		return opt.isPresent() ? ResponseEntity.ok(opt.get()) : ResponseEntity.notFound().build();
+	}
+
+	@GetMapping("/obterPorUsuarioEmail/{email}")
+	public ResponseEntity<Usuario> obterPorEmail(@PathVariable String email) {
+		Optional<Usuario> opt = usuarioRepository.findByEmail(email);
+		return opt.isPresent() ? ResponseEntity.ok(opt.get()) : ResponseEntity.notFound().build();
+	}
+
+	@GetMapping("/{id}/urnas")
+	public ResponseEntity<List<Urna>> listaUrnasUsuario(@PathVariable Long id) {
+		Optional<Usuario> opt = usuarioRepository.findById(id);
+		return opt.isPresent() ? ResponseEntity.ok(opt.get().getUrnas())
+				: ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ArrayList<>());
 	}
 
 	@PostMapping

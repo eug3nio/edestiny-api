@@ -3,6 +3,7 @@ package br.com.up.edestiny.api.model;
 import java.io.Serializable;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -13,7 +14,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.Valid;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -56,6 +59,11 @@ public class Usuario implements Serializable {
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "usuario_permissao", joinColumns = @JoinColumn(name = "usuario_id"), inverseJoinColumns = @JoinColumn(name = "permissao_id"))
 	private List<Permissao> permissoes;
+
+	@Valid
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "usuarioResponsavel", orphanRemoval = true)
+	@JsonIgnoreProperties("usuarioResponsavel")
+	private List<Urna> urnas;
 
 	public Long getId() {
 		return id;
@@ -119,6 +127,14 @@ public class Usuario implements Serializable {
 
 	public void setPermissoes(List<Permissao> permissoes) {
 		this.permissoes = permissoes;
+	}
+
+	public List<Urna> getUrnas() {
+		return urnas;
+	}
+
+	public void setUrnas(List<Urna> urnas) {
+		this.urnas = urnas;
 	}
 
 	@Override

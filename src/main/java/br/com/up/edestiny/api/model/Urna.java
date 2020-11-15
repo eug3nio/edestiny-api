@@ -49,6 +49,11 @@ public class Urna implements Serializable {
 	@JsonIgnoreProperties("urnas")
 	private Empresa empresa;
 
+	@ManyToOne
+	@JoinColumn(name = "usuario_id", referencedColumnName = "id")
+	@JsonIgnoreProperties("urnas")
+	private Usuario usuarioResponsavel;
+
 	public Long getId() {
 		return id;
 	}
@@ -95,6 +100,14 @@ public class Urna implements Serializable {
 
 	public void setEmpresa(Empresa empresa) {
 		this.empresa = empresa;
+	}
+
+	public Usuario getUsuarioResponsavel() {
+		return usuarioResponsavel;
+	}
+
+	public void setUsuarioResponsavel(Usuario usuarioResponsavel) {
+		this.usuarioResponsavel = usuarioResponsavel;
 	}
 
 	@Override
