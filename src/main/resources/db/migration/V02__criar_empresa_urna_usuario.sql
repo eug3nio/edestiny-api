@@ -30,7 +30,7 @@ CREATE TABLE urna (
   quantidade_atual DOUBLE(10,3) NOT NULL,
   quantidade_maxima DOUBLE(10,3) NOT NULL,
   empresa_id FLOAT NOT NULL,
-  usuario_id FLOAT NOT NULL,
+  usuario_id FLOAT,
   PRIMARY KEY (id),
   FOREIGN KEY (empresa_id) REFERENCES empresa(id),
   FOREIGN KEY (usuario_id) REFERENCES usuario(id)
