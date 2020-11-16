@@ -56,6 +56,7 @@ public class Usuario implements Serializable {
 	@JsonIgnoreProperties("usuarios")
 	private Empresa empresa;
 
+	@JsonIgnoreProperties
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "usuario_permissao", joinColumns = @JoinColumn(name = "usuario_id"), inverseJoinColumns = @JoinColumn(name = "permissao_id"))
 	private List<Permissao> permissoes;

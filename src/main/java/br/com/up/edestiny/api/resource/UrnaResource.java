@@ -1,6 +1,7 @@
 package br.com.up.edestiny.api.resource;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Optional;
 
 import javax.servlet.http.HttpServletResponse;
@@ -23,7 +24,9 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.up.edestiny.api.event.RecursoCriadoEvent;
+import br.com.up.edestiny.api.model.Empresa;
 import br.com.up.edestiny.api.model.Urna;
+import br.com.up.edestiny.api.repository.EmpresaRepository;
 import br.com.up.edestiny.api.repository.UrnaRepository;
 import br.com.up.edestiny.api.repository.dto.UrnaDTO;
 import br.com.up.edestiny.api.repository.filter.UrnaFilter;
@@ -40,6 +43,9 @@ public class UrnaResource implements Serializable {
 
 	@Autowired
 	private UrnaRepository urnaRepository;
+	
+	@Autowired
+	private EmpresaRepository empresaRepository;
 
 	@Autowired
 	private UrnaService urnaService;
@@ -58,6 +64,13 @@ public class UrnaResource implements Serializable {
 	public ResponseEntity<Urna> obterPorId(@PathVariable Long id) {
 		Optional<Urna> opt = urnaRepository.findById(id);
 		return opt.isPresent() ? ResponseEntity.ok(opt.get()) : ResponseEntity.notFound().build();
+	}
+	
+	@GetMapping("/listaUrnasEmpresa/{id}")
+	public ResponseEntity<List<Urna>> listaUrnasEmpresa(@PathVariable Long id) {
+		Optional<Empresa> opt = empresaRepository.findById(id);
+		List<Urna> lista = urnaRepository.findAllByEmpresa(opt.get());
+		return !lista.isEmpty() ? ResponseEntity.ok(lista) : ResponseEntity.noContent().build();
 	}
 
 	@PostMapping
