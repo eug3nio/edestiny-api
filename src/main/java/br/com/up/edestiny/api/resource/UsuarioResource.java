@@ -43,7 +43,7 @@ public class UsuarioResource implements Serializable {
 
 	@Autowired
 	private UsuarioRepository usuarioRepository;
-
+ 
 	@Autowired
 	private UsuarioService usuarioService;
 
@@ -85,8 +85,21 @@ public class UsuarioResource implements Serializable {
 		if (optUsuario.isPresent()) {
 			return ResponseEntity.status(HttpStatus.OK).body(optUsuario.get());
 		}
-
+		
+		List<Urna> urnas = new ArrayList<>();
+		for (Urna item : usuario.getUrnas()) {
+			urnas.add(item);
+		}
+		usuario.getUrnas().clear();
 		Usuario novoUsuario = usuarioRepository.save(usuario);
+		
+		for (Urna item : urnas) {
+			item.setUsuarioResponsavel(novoUsuario);
+		}
+		
+		novoUsuario.getUrnas().addAll(urnas);
+		usuarioRepository.save(novoUsuario);
+		
 		publisher.publishEvent(new RecursoCriadoEvent(this, response, novoUsuario.getId()));
 		return ResponseEntity.status(HttpStatus.CREATED).body(novoUsuario);
 	}
