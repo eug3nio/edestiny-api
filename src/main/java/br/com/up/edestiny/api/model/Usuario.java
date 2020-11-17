@@ -53,7 +53,7 @@ public class Usuario implements Serializable {
 
 	@ManyToOne
 	@JoinColumn(name = "empresa_id", referencedColumnName = "id")
-	@JsonIgnoreProperties("usuarios")
+	@JsonIgnoreProperties({"usuarios", "endereco"})
 	private Empresa empresa;
 
 	@JsonIgnoreProperties
@@ -63,7 +63,7 @@ public class Usuario implements Serializable {
 
 	@Valid
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "usuarioResponsavel", orphanRemoval = true)
-	@JsonIgnoreProperties("usuarioResponsavel")
+	@JsonIgnoreProperties({"usuarioResponsavel", "empresa"})
 	private List<Urna> urnas;
 
 	public Long getId() {

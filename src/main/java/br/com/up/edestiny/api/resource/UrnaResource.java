@@ -69,7 +69,7 @@ public class UrnaResource implements Serializable {
 	@GetMapping("/listaUrnasEmpresa/{id}")
 	public ResponseEntity<List<Urna>> listaUrnasEmpresa(@PathVariable Long id) {
 		Optional<Empresa> opt = empresaRepository.findById(id);
-		List<Urna> lista = urnaRepository.findAllByEmpresa(opt.get());
+		List<Urna> lista = urnaRepository.findByEmpresa(opt.get());
 		return !lista.isEmpty() ? ResponseEntity.ok(lista) : ResponseEntity.noContent().build();
 	}
 

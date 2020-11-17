@@ -51,7 +51,7 @@ public class Urna implements Serializable {
 
 	@ManyToOne
 	@JoinColumn(name = "usuario_id", referencedColumnName = "id")
-	@JsonIgnoreProperties({ "urnas", "permissoes" })
+	@JsonIgnoreProperties({ "urnas", "permissoes", "empresa" })
 	private Usuario usuarioResponsavel;
 
 	public Long getId() {
