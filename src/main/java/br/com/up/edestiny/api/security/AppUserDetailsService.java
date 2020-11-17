@@ -39,21 +39,22 @@ public class AppUserDetailsService implements UserDetailsService {
 		Optional<Usuario> usuario = usuarioRepository.findByEmail(email);
 
 		if (usuario.isPresent()) {
-			return new UsuarioSistema(usuario.get().getNome(), usuario.get().getEmpresa().getId(), email,
-					usuario.get().getSenha(), true, true, true, true, getPermissoes(usuario.get().getPermissoes()));
+			return new UsuarioSistema(usuario.get().getNome(), usuario.get().getEmpresa().getId(),
+					usuario.get().getAdmin(), email, usuario.get().getSenha(), true, true, true, true,
+					getPermissoes(usuario.get().getPermissoes()));
 		}
 
 		Optional<Detentor> detentor = detentorRepository.findByEmail(email);
 
 		if (detentor.isPresent()) {
-			return new UsuarioSistema(detentor.get().getNome(), detentor.get().getId(), email,
+			return new UsuarioSistema(detentor.get().getNome(), detentor.get().getId(), false, email,
 					detentor.get().getSenha(), true, true, true, true, getPermissoes(detentor.get().getPermissoes()));
 		}
 
 		Optional<Coletor> coletor = coletorRepository.findByEmail(email);
 
 		if (coletor.isPresent()) {
-			return new UsuarioSistema(coletor.get().getRazaoSocial(), coletor.get().getId(), email,
+			return new UsuarioSistema(coletor.get().getRazaoSocial(), coletor.get().getId(), false, email,
 					coletor.get().getSenha(), true, true, true, true, getPermissoes(coletor.get().getPermissoes()));
 		}
 

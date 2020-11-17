@@ -11,13 +11,15 @@ public class UsuarioSistema extends User {
 
 	private String nomeUsuario;
 	private Long empresaId;
+	private boolean admin;
 
-	public UsuarioSistema(String nomeUsuario, Long empresaId, String username, String password, boolean enabled,
-			boolean accountNonExpired, boolean credentialsNonExpired, boolean accountNonLocked,
+	public UsuarioSistema(String nomeUsuario, Long empresaId, boolean admin, String username, String password,
+			boolean enabled, boolean accountNonExpired, boolean credentialsNonExpired, boolean accountNonLocked,
 			Collection<? extends GrantedAuthority> authorities) {
 		super(username, password, enabled, accountNonExpired, credentialsNonExpired, accountNonLocked, authorities);
 		this.nomeUsuario = nomeUsuario;
 		this.empresaId = empresaId;
+		this.admin = admin;
 	}
 
 	public String getNomeUsuario() {
@@ -26,6 +28,10 @@ public class UsuarioSistema extends User {
 
 	public Long getEmpresaId() {
 		return empresaId;
+	}
+
+	public boolean isAdmin() {
+		return admin;
 	}
 
 }
