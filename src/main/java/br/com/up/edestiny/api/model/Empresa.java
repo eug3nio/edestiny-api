@@ -62,7 +62,7 @@ public class Empresa implements Serializable {
 	private Endereco endereco;
 
 	@Valid
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "empresa", orphanRemoval = true)
+	@OneToMany(mappedBy = "empresa", orphanRemoval = true)
 	@JsonIgnoreProperties({"empresa", "usuarios"})
 	private List<Urna> urnas;
 
