@@ -96,9 +96,6 @@ public class EmpresaResource implements Serializable {
 			return ResponseEntity.status(HttpStatus.OK).body(optEmpresa.get());
 		}
 
-		enderecoRepository.save(empresa.getEndereco());
-		empresa.getUrnas().forEach(it -> it.setEmpresa(empresa));
-		empresa.getUsuarios().forEach(it -> it.setEmpresa(empresa));
 		Empresa novaEmpresa = empresaRepository.save(empresa);
 
 		publisher.publishEvent(new RecursoCriadoEvent(this, response, novaEmpresa.getId()));
