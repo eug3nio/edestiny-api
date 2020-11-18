@@ -3,7 +3,6 @@ package br.com.up.edestiny.api.model;
 import java.io.Serializable;
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -53,7 +52,7 @@ public class Usuario implements Serializable {
 
 	@ManyToOne
 	@JoinColumn(name = "empresa_id", referencedColumnName = "id")
-	@JsonIgnoreProperties({"usuarios", "endereco", "urnas"})
+	@JsonIgnoreProperties({ "usuarios", "endereco", "urnas" })
 	private Empresa empresa;
 
 	@JsonIgnoreProperties
@@ -62,8 +61,8 @@ public class Usuario implements Serializable {
 	private List<Permissao> permissoes;
 
 	@Valid
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "usuarioResponsavel", orphanRemoval = true)
-	@JsonIgnoreProperties({"usuarioResponsavel", "empresa"})
+	@OneToMany(mappedBy = "usuarioResponsavel", orphanRemoval = true)
+	@JsonIgnoreProperties({ "usuarioResponsavel", "empresa" })
 	private List<Urna> urnas;
 
 	public Long getId() {

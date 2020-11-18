@@ -9,6 +9,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -26,8 +27,10 @@ import org.springframework.web.bind.annotation.RestController;
 import br.com.up.edestiny.api.event.RecursoCriadoEvent;
 import br.com.up.edestiny.api.model.Empresa;
 import br.com.up.edestiny.api.model.Urna;
+import br.com.up.edestiny.api.model.Usuario;
 import br.com.up.edestiny.api.repository.EmpresaRepository;
 import br.com.up.edestiny.api.repository.UrnaRepository;
+import br.com.up.edestiny.api.repository.UsuarioRepository;
 import br.com.up.edestiny.api.repository.dto.UrnaDTO;
 import br.com.up.edestiny.api.repository.filter.UrnaFilter;
 import br.com.up.edestiny.api.service.UrnaService;
@@ -46,10 +49,24 @@ public class UrnaResource implements Serializable {
 	
 	@Autowired
 	private EmpresaRepository empresaRepository;
+	
+	@Autowired
+	private UsuarioRepository usuarioRepository;
 
 	@Autowired
 	private UrnaService urnaService;
 
+	@GetMapping("/admin/{id}")
+	public ResponseEntity<List<Urna>> listarUrnasAdmin(@PathVariable Long id) {
+		Optional<Usuario> optUsuario = usuarioRepository.findById(id);
+
+		if (optUsuario.isPresent() && optUsuario.get().getAdmin().booleanValue()) {
+			return ResponseEntity.ok(urnaRepository.findAll());
+		} else {
+			throw new EmptyResultDataAccessException(1);
+		}
+	}
+	
 	@GetMapping
 	public Page<Urna> pesquisar(UrnaFilter filter, Pageable pageable) {
 		return urnaRepository.filtrar(filter, pageable);
