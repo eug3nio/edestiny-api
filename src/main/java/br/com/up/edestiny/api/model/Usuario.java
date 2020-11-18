@@ -15,7 +15,6 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.Valid;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -60,7 +59,6 @@ public class Usuario implements Serializable {
 	@JoinTable(name = "usuario_permissao", joinColumns = @JoinColumn(name = "usuario_id"), inverseJoinColumns = @JoinColumn(name = "permissao_id"))
 	private List<Permissao> permissoes;
 
-	@Valid
 	@OneToMany(mappedBy = "usuarioResponsavel", orphanRemoval = true)
 	@JsonIgnoreProperties({ "usuarioResponsavel", "empresa" })
 	private List<Urna> urnas;
