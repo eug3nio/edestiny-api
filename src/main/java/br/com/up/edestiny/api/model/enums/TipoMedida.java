@@ -25,9 +25,9 @@ public enum TipoMedida {
 	 * @param codigo
 	 * @return
 	 */
-	public static TipoMedida findByCodigo(Integer codigo) {
+	public static TipoMedida findByDescricao(String codigo) {
 		for (TipoMedida item : TipoMedida.values()) {
-			if (item.getCodigo() == codigo) {
+			if (item.getDescricao().equalsIgnoreCase(codigo)) {
 				return item;
 			}
 		}
