@@ -107,7 +107,7 @@ public class UrnaResource implements Serializable {
 
 	@PutMapping("/{id}")
 	public ResponseEntity<Urna> atualizarUrna(@PathVariable Long id, @Valid @RequestBody Urna urna) {
-		return ResponseEntity.status(HttpStatus.OK).body(urnaService.atualizarUsuario(id, urna));
+		return ResponseEntity.status(HttpStatus.OK).body(urnaService.atualizarUrna(id, urna));
 	}
 
 }
