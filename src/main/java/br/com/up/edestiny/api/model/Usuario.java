@@ -53,7 +53,7 @@ public class Usuario implements Serializable {
 
 	@ManyToOne
 	@JoinColumn(name = "empresa_id", referencedColumnName = "id")
-	@JsonIgnoreProperties({"usuarios", "endereco"})
+	@JsonIgnoreProperties({"usuarios", "endereco", "urnas"})
 	private Empresa empresa;
 
 	@JsonIgnoreProperties
