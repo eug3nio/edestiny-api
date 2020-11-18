@@ -25,7 +25,7 @@ public class UsuarioRepositoryImpl implements UsuarioRepositoryQuery {
 
 		sql.append("SELECT u FROM Usuario u ");
 		sql.append(" INNER JOIN u.empresa e ");
-		sql.append(" WHERE 1=1 ").append(getWhere(filter));
+		sql.append(" WHERE admin IS FALSE ").append(getWhere(filter));
 
 		Query q = manager.createQuery(sql.toString());
 
@@ -42,7 +42,7 @@ public class UsuarioRepositoryImpl implements UsuarioRepositoryQuery {
 
 		sql.append("SELECT new br.com.up.edestiny.api.repository.dto.UsuarioDTO(u) FROM Usuario u ");
 		sql.append(" INNER JOIN u.empresa e ");
-		sql.append(" WHERE 1=1 ").append(getWhere(filter));
+		sql.append(" WHERE admin IS FALSE ").append(getWhere(filter));
 
 		Query q = manager.createQuery(sql.toString());
 
@@ -107,7 +107,7 @@ public class UsuarioRepositoryImpl implements UsuarioRepositoryQuery {
 
 		sql.append("SELECT COUNT(u) FROM Usuario u ");
 		sql.append(" INNER JOIN u.empresa e ");
-		sql.append(" WHERE 1=1 ").append(getWhere(filter));
+		sql.append(" WHERE admin IS FALSE ").append(getWhere(filter));
 
 		Query q = manager.createQuery(sql.toString());
 
