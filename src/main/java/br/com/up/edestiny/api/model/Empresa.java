@@ -63,12 +63,12 @@ public class Empresa implements Serializable {
 
 	@Valid
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "empresa", orphanRemoval = true)
-	@JsonIgnoreProperties("empresa")
+	@JsonIgnoreProperties({"empresa", "usuarios"})
 	private List<Urna> urnas;
 
 	@Valid
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "empresa", orphanRemoval = true)
-	@JsonIgnoreProperties("empresa")
+	@JsonIgnoreProperties({"empresa", "urnas", "permissoes"})
 	private List<Usuario> usuarios;
 
 	public Long getId() {
