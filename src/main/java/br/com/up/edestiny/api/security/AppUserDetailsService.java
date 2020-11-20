@@ -1,5 +1,6 @@
 package br.com.up.edestiny.api.security;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
@@ -48,14 +49,14 @@ public class AppUserDetailsService implements UserDetailsService {
 
 		if (detentor.isPresent()) {
 			return new UsuarioSistema(detentor.get().getNome(), detentor.get().getId(), false, email,
-					detentor.get().getSenha(), true, true, true, true, getPermissoes(detentor.get().getPermissoes()));
+					detentor.get().getSenha(), true, true, true, true, getPermissoes(new ArrayList<>()));
 		}
 
 		Optional<Coletor> coletor = coletorRepository.findByEmail(email);
 
 		if (coletor.isPresent()) {
 			return new UsuarioSistema(coletor.get().getRazaoSocial(), coletor.get().getId(), false, email,
-					coletor.get().getSenha(), true, true, true, true, getPermissoes(coletor.get().getPermissoes()));
+					coletor.get().getSenha(), true, true, true, true, getPermissoes(new ArrayList<>()));
 		}
 
 		new UsernameNotFoundException("Usuário e/ou senha incorretos");

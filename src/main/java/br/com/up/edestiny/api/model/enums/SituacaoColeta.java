@@ -19,4 +19,14 @@ public enum SituacaoColeta {
 	public String getDescricao() {
 		return descricao;
 	}
+
+	public static SituacaoColeta findByDescricao(String descricao) {
+		for (SituacaoColeta item : SituacaoColeta.values()) {
+			if (item.getDescricao().equals(descricao)) {
+				return item;
+			}
+		}
+
+		return null;
+	}
 }

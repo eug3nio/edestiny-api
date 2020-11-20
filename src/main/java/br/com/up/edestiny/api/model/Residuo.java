@@ -15,6 +15,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import br.com.up.edestiny.api.model.enums.UnidadeMedida;
 
 @Entity
@@ -26,18 +28,23 @@ public class Residuo implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
+
 	@Size(min = 3, max = 255)
 	private String descricao;
 	private BigDecimal quantidade;
-	
+
 	@Column(name = "unidade_medida")
 	@Enumerated(EnumType.STRING)
 	private UnidadeMedida unidadeMedida;
-	
+
 	@ManyToOne
 	@JoinColumn(name = "categoria_id")
 	private Categoria categoria;
+
+	@ManyToOne
+	@JoinColumn(name = "solicitacao_id", referencedColumnName = "id")
+	@JsonIgnoreProperties({ "residuos", "coleta" })
+	private Solicitacao solicitacao;
 
 	public Long getId() {
 		return id;
@@ -77,6 +84,14 @@ public class Residuo implements Serializable {
 
 	public void setCategoria(Categoria categoria) {
 		this.categoria = categoria;
+	}
+
+	public Solicitacao getSolicitacao() {
+		return solicitacao;
+	}
+
+	public void setSolicitacao(Solicitacao solicitacao) {
+		this.solicitacao = solicitacao;
 	}
 
 	@Override

@@ -1,18 +1,14 @@
 package br.com.up.edestiny.api.model;
 
 import java.io.Serializable;
-import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
@@ -60,11 +56,7 @@ public class Coletor implements Serializable {
 
 	@OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
 	@JoinColumn(name = "endereco_id")
-	private Endereco endereco;	
-
-	@ManyToMany(fetch = FetchType.EAGER)
-	@JoinTable(name = "coletor_permissao", joinColumns = @JoinColumn(name = "coletor_id"), inverseJoinColumns = @JoinColumn(name = "permissao_id"))
-	private List<Permissao> permissoes;
+	private Endereco endereco;
 
 	public Long getId() {
 		return id;
@@ -136,14 +128,6 @@ public class Coletor implements Serializable {
 
 	public void setEndereco(Endereco endereco) {
 		this.endereco = endereco;
-	}
-
-	public List<Permissao> getPermissoes() {
-		return permissoes;
-	}
-
-	public void setPermissoes(List<Permissao> permissoes) {
-		this.permissoes = permissoes;
 	}
 
 	@Override
