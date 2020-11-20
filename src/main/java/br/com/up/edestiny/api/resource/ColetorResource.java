@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import br.com.up.edestiny.api.event.RecursoCriadoEvent;
 import br.com.up.edestiny.api.model.Coletor;
 import br.com.up.edestiny.api.repository.ColetorRepository;
+import br.com.up.edestiny.api.service.UsuarioService;
 
 @RestController
 @RequestMapping("/coletor")
@@ -32,6 +33,9 @@ public class ColetorResource implements Serializable {
 	private ColetorRepository coletorRepository;
 
 	@Autowired
+	private UsuarioService usuarioService;
+
+	@Autowired
 	private ApplicationEventPublisher publisher;
 
 	@GetMapping
@@ -39,9 +43,12 @@ public class ColetorResource implements Serializable {
 		return coletorRepository.findAll();
 	}
 
-	@PostMapping
+	@PostMapping("/novoColetor")
 	@ResponseStatus(code = HttpStatus.CREATED)
 	public ResponseEntity<Coletor> novoColetor(@Valid @RequestBody Coletor coletor, HttpServletResponse response) {
+
+		coletor.setSenha(usuarioService.obterSenhaBCrypt(coletor.getSenha()));
+
 		Optional<Coletor> optColetor = coletorRepository.findByCnpj(coletor.getCnpj());
 
 		if (optColetor.isPresent()) {

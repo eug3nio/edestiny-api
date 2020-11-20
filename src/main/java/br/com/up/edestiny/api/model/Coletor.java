@@ -3,6 +3,7 @@ package br.com.up.edestiny.api.model;
 import java.io.Serializable;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -57,9 +58,9 @@ public class Coletor implements Serializable {
 	@Size(min = 11, max = 15)
 	private String telefone;
 
-	@OneToOne
+	@OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
 	@JoinColumn(name = "endereco_id")
-	private Endereco endereco;
+	private Endereco endereco;	
 
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "coletor_permissao", joinColumns = @JoinColumn(name = "coletor_id"), inverseJoinColumns = @JoinColumn(name = "permissao_id"))
