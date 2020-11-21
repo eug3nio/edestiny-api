@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -33,6 +34,7 @@ import br.com.up.edestiny.api.repository.UrnaRepository;
 import br.com.up.edestiny.api.repository.UsuarioRepository;
 import br.com.up.edestiny.api.repository.dto.UrnaDTO;
 import br.com.up.edestiny.api.repository.filter.UrnaFilter;
+import br.com.up.edestiny.api.service.RabbitMQSender;
 import br.com.up.edestiny.api.service.UrnaService;
 
 @RestController
@@ -55,6 +57,9 @@ public class UrnaResource implements Serializable {
 
 	@Autowired
 	private UrnaService urnaService;
+	
+	@Autowired
+	private RabbitMQSender rabbitMQSender;
 
 	@GetMapping("/admin/{id}")
 	public ResponseEntity<List<Urna>> listarUrnasAdmin(@PathVariable Long id) {
@@ -97,6 +102,12 @@ public class UrnaResource implements Serializable {
 
 		publisher.publishEvent(new RecursoCriadoEvent(this, response, novaUrna.getId()));
 		return ResponseEntity.status(HttpStatus.CREATED).body(novaUrna);
+	}
+	
+	@GetMapping(value = "/enviarMensagem")
+	public String enviarMensagem(@RequestParam("mensagem") String mensagem) {
+		rabbitMQSender.send(mensagem);
+		return "Message sent to the RabbitMQ JavaInUse Successfully";
 	}
 
 	@DeleteMapping("/{id}")

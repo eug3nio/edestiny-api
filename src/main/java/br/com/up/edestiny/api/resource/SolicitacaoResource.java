@@ -72,8 +72,8 @@ public class SolicitacaoResource implements Serializable {
 	
 	@GetMapping("/findAllBySolicitante")
 	public List<Solicitacao> findAllBySolicitante(String email, HttpServletResponse response) {
-		Detentor solicitante = detentorRepository.findByEmail(email);
-		return solicitacaoRepository.findBySolicitante(solicitante);
+		Optional<Detentor> solicitante = detentorRepository.findByEmail(email);
+		return solicitacaoRepository.findBySolicitante(solicitante.get());
 	}
 
 	@PostMapping

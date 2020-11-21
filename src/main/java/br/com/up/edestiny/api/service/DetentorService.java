@@ -57,18 +57,18 @@ public class DetentorService implements Serializable {
 	 * @param email
 	 */
 	public void recuperarSenha(String email) {
-		Detentor optUsuario = detentorRepository.findByEmail(email);
+		Optional<Detentor> optUsuario = detentorRepository.findByEmail(email);
 
 		
 		String novaSenha = gerarSenhaAleatoria();
-		optUsuario.setSenha(obterSenhaBCrypt(novaSenha));
+		optUsuario.get().setSenha(obterSenhaBCrypt(novaSenha));
 		SimpleMailMessage emailSender = new SimpleMailMessage();
 		emailSender.setTo(email);
 		emailSender.setSubject("Recuperação de senha");
-		emailSender.setText("Nova senha do usuário " + optUsuario.getNome() + ": " + novaSenha);
+		emailSender.setText("Nova senha do usuário " + optUsuario.get().getNome() + ": " + novaSenha);
 		javaMailSender.send(emailSender);
 
-		detentorRepository.save(optUsuario);
+		detentorRepository.save(optUsuario.get());
 	
 	}
 
