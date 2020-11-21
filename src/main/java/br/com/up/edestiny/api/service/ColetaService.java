@@ -56,6 +56,7 @@ public class ColetaService implements Serializable {
 			coletaSalva.get().getSolicitacoes().forEach(it -> {
 				if (!coleta.getSolicitacoes().contains(it)) {
 					it.setColeta(null);
+					it.setSituacao(SituacaoSolicitacao.ABERTA);
 					solicitacaoRepository.save(it);
 				}
 			});
@@ -100,7 +101,7 @@ public class ColetaService implements Serializable {
 							.awaitIgnoreError();
 
 					Gson gson = new GsonBuilder().setPrettyPrinting().create();
-					System.out.println(gson.toJson(result));
+					System.out.println(gson.toJson(result.routes));
 				}
 			}
 		} else {
