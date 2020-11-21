@@ -28,7 +28,6 @@ import br.com.up.edestiny.api.event.RecursoCriadoEvent;
 import br.com.up.edestiny.api.model.Empresa;
 import br.com.up.edestiny.api.model.Usuario;
 import br.com.up.edestiny.api.repository.EmpresaRepository;
-import br.com.up.edestiny.api.repository.EnderecoRespository;
 import br.com.up.edestiny.api.repository.UsuarioRepository;
 import br.com.up.edestiny.api.repository.dto.EmpresaDTO;
 import br.com.up.edestiny.api.repository.filter.EmpresaFilter;
@@ -42,9 +41,6 @@ public class EmpresaResource implements Serializable {
 
 	@Autowired
 	private EmpresaRepository empresaRepository;
-
-	@Autowired
-	private EnderecoRespository enderecoRepository;
 
 	@Autowired
 	private UsuarioRepository usuarioRepository;
@@ -96,9 +92,6 @@ public class EmpresaResource implements Serializable {
 			return ResponseEntity.status(HttpStatus.OK).body(optEmpresa.get());
 		}
 
-		enderecoRepository.save(empresa.getEndereco());
-		empresa.getUrnas().forEach(it -> it.setEmpresa(empresa));
-		empresa.getUsuarios().forEach(it -> it.setEmpresa(empresa));
 		Empresa novaEmpresa = empresaRepository.save(empresa);
 
 		publisher.publishEvent(new RecursoCriadoEvent(this, response, novaEmpresa.getId()));

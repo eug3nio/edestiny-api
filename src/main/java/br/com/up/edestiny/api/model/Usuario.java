@@ -13,6 +13,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
@@ -50,12 +51,17 @@ public class Usuario implements Serializable {
 
 	@ManyToOne
 	@JoinColumn(name = "empresa_id", referencedColumnName = "id")
-	@JsonIgnoreProperties("usuarios")
+	@JsonIgnoreProperties({ "usuarios", "endereco", "urnas" })
 	private Empresa empresa;
 
+	@JsonIgnoreProperties
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "usuario_permissao", joinColumns = @JoinColumn(name = "usuario_id"), inverseJoinColumns = @JoinColumn(name = "permissao_id"))
 	private List<Permissao> permissoes;
+
+	@OneToMany(mappedBy = "usuarioResponsavel", orphanRemoval = true)
+	@JsonIgnoreProperties({ "usuarioResponsavel", "empresa" })
+	private List<Urna> urnas;
 
 	public Long getId() {
 		return id;
@@ -119,6 +125,14 @@ public class Usuario implements Serializable {
 
 	public void setPermissoes(List<Permissao> permissoes) {
 		this.permissoes = permissoes;
+	}
+
+	public List<Urna> getUrnas() {
+		return urnas;
+	}
+
+	public void setUrnas(List<Urna> urnas) {
+		this.urnas = urnas;
 	}
 
 	@Override

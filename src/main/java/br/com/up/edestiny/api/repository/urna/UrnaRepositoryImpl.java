@@ -82,7 +82,7 @@ public class UrnaRepositoryImpl implements UrnaRepositoryQuery {
 		}
 
 		if (!StringUtils.isEmpty(filter.getTipoMedida())) {
-			TipoMedida tm = TipoMedida.findByCodigo(Integer.parseInt(filter.getTipoMedida()));
+			TipoMedida tm = TipoMedida.findByDescricao(filter.getTipoMedida());
 			q.setParameter("tipoMedida", tm);
 		}
 

@@ -25,11 +25,11 @@ public class UrnaService implements Serializable {
 	 * @param urna
 	 * @return
 	 */
-	public Urna atualizarUsuario(Long id, Urna urna) {
+	public Urna atualizarUrna(Long id, Urna urna) {
 		Optional<Urna> urnaSalvo = urnaRepository.findById(id);
 
 		if (urnaSalvo.isPresent()) {
-			BeanUtils.copyProperties(urna, urnaSalvo.get(), "id", "empresa");
+			BeanUtils.copyProperties(urna, urnaSalvo.get(), "id");
 			return urnaRepository.save(urnaSalvo.get());
 		} else {
 			throw new EmptyResultDataAccessException(1);

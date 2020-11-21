@@ -12,11 +12,12 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import br.com.up.edestiny.api.model.enums.SituacaoSolicitacao;
 
@@ -32,19 +33,25 @@ public class Solicitacao implements Serializable {
 
 	@ManyToOne
 	@JoinColumn(name = "solicitante_id")
+	@JsonIgnoreProperties({ "enderecos" })
 	private Detentor solicitante;
 
-	@OneToMany
-	@JoinTable(name = "solicitacao_residuo", joinColumns = @JoinColumn(name = "solicitacao_id"), inverseJoinColumns = @JoinColumn(name = "residuo_id"))
-	private List<Residuo> residuos;
+	@OneToMany(mappedBy = "solicitacao", orphanRemoval = true)
+	@JsonIgnoreProperties({ "solicitacao" })
+	private List<Residuo> residuos;	
 
 	@Enumerated(EnumType.STRING)
 	private SituacaoSolicitacao situacao;
 	private String justificativa;
-	
+
 	@NotNull
 	@Column(name = "dt_solicitacao")
 	private LocalDate dtSolicitacao;
+
+	@ManyToOne
+	@JoinColumn(name = "coleta_id", referencedColumnName = "id")
+	@JsonIgnoreProperties({ "solicitacoes" })
+	private Coleta coleta;
 
 	public Long getId() {
 		return id;
@@ -92,6 +99,14 @@ public class Solicitacao implements Serializable {
 
 	public void setDtSolicitacao(LocalDate dtSolicitacao) {
 		this.dtSolicitacao = dtSolicitacao;
+	}
+
+	public Coleta getColeta() {
+		return coleta;
+	}
+
+	public void setColeta(Coleta coleta) {
+		this.coleta = coleta;
 	}
 
 	@Override

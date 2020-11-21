@@ -39,7 +39,7 @@ public class EmpresaService implements Serializable {
 
 		if (empresaSalva.isPresent()) {
 			empresaSalva.get().getUrnas().clear();
-			empresaSalva.get().getUrnas().addAll(urnaRepository.findAllByEmpresa(empresaSalva.get()));
+			empresaSalva.get().getUrnas().addAll(urnaRepository.findByEmpresa(empresaSalva.get()));
 			empresaSalva.get().getUrnas().forEach(it -> it.setEmpresa(empresaSalva.get()));
 			
 			empresaSalva.get().getUsuarios().clear();

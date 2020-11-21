@@ -12,11 +12,12 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import br.com.up.edestiny.api.model.enums.SituacaoColeta;
 
@@ -35,14 +36,13 @@ public class Coleta implements Serializable {
 	@JoinColumn(name = "coletor_id")
 	private Coletor coletor;
 
-	@ManyToMany
-	@JoinTable(name = "coleta_solicitacoes", joinColumns = @JoinColumn(name = "coleta_id"), inverseJoinColumns = @JoinColumn(name = "solicitacao_id"))
+	@OneToMany(mappedBy = "coleta", orphanRemoval = true)
+	@JsonIgnoreProperties({ "coleta" })
 	private List<Solicitacao> solicitacoes;
 
 	@Enumerated(EnumType.STRING)
 	private SituacaoColeta situacao;
 
-	@NotNull
 	@Column(name = "dt_movimentacao")
 	private LocalDate dtMovimentacao;
 

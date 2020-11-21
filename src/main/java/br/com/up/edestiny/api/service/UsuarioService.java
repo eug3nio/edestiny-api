@@ -12,6 +12,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import br.com.up.edestiny.api.model.Usuario;
+import br.com.up.edestiny.api.repository.UrnaRepository;
 import br.com.up.edestiny.api.repository.UsuarioRepository;
 
 @Service
@@ -21,6 +22,9 @@ public class UsuarioService implements Serializable {
 
 	@Autowired
 	private UsuarioRepository usuarioRepository;
+	
+	@Autowired
+	private UrnaRepository urnaRepository;
 
 	@Autowired
 	private JavaMailSender javaMailSender;
@@ -35,7 +39,22 @@ public class UsuarioService implements Serializable {
 		Optional<Usuario> usuarioSalvo = usuarioRepository.findById(id);
 
 		if (usuarioSalvo.isPresent()) {
-			BeanUtils.copyProperties(usuario, usuarioSalvo.get(), "id", "empresa");
+			usuarioSalvo.get().getUrnas().forEach(it-> {
+				if (!usuario.getUrnas().contains(it)) {
+					it.setUsuarioResponsavel(null);
+					urnaRepository.save(it);
+				}
+			});
+			
+			usuarioSalvo.get().getUrnas().clear();
+			usuarioSalvo.get().getUrnas().addAll(usuario.getUrnas());
+			usuarioSalvo.get().getUrnas().forEach(it -> {
+				it.setUsuarioResponsavel(usuarioSalvo.get());
+				it.setEmpresa(usuarioSalvo.get().getEmpresa());
+				urnaRepository.save(it);
+			});
+
+			BeanUtils.copyProperties(usuario, usuarioSalvo.get(), "id", "empresa", "urnas");
 			return usuarioRepository.save(usuarioSalvo.get());
 		} else {
 			throw new EmptyResultDataAccessException(1);
