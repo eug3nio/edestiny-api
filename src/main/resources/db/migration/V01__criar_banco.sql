@@ -16,17 +16,12 @@ CREATE TABLE detentor (
   email VARCHAR(255) NOT NULL,
   senha VARCHAR(72) NOT NULL,
   telefone VARCHAR(15) NOT NULL,
+  endereco_id FLOAT NOT NULL,
   foto_perfil LONGBLOB,
   PRIMARY KEY (id),
+  FOREIGN KEY (endereco_id) REFERENCES endereco(id),
   UNIQUE (email)
  ) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8;
-
-CREATE TABLE endereco_detentor (
-	detentor_id FLOAT NOT NULL,
-	endereco_id FLOAT NOT NULL,
-	FOREIGN KEY (detentor_id) REFERENCES detentor(id),
-	FOREIGN KEY (endereco_id) REFERENCES endereco(id)
-) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8;
 
 CREATE TABLE categoria (
   id FLOAT NOT NULL AUTO_INCREMENT,

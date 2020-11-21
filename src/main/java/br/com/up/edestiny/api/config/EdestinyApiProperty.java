@@ -7,6 +7,8 @@ public class EdestinyApiProperty {
 
 	private String originPermitida = "http://localhost:4200";
 
+	private String apiKeyGoogle = "AIzaSyDZJfPgnA3e77_iJxb_cMmTihlapPNYKwk";
+
 	private final Seguranca seguranca = new Seguranca();
 
 	public static class Seguranca {
@@ -32,5 +34,9 @@ public class EdestinyApiProperty {
 
 	public void setOriginPermitida(String originPermitida) {
 		this.originPermitida = originPermitida;
+	}
+
+	public String getApiKeyGoogle() {
+		return apiKeyGoogle;
 	}
 }

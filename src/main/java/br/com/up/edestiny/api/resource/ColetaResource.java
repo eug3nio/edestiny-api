@@ -94,6 +94,13 @@ public class ColetaResource implements Serializable {
 	@DeleteMapping("/{id}")
 	@ResponseStatus(code = HttpStatus.NO_CONTENT)
 	public void removerColeta(@PathVariable Long id) {
+		Optional<Coleta> optColeta = coletaRepository.findById(id);
+
+		optColeta.get().getSolicitacoes().forEach(it -> {
+			it.setSituacao(SituacaoSolicitacao.ABERTA);
+			solicitacaoRepository.save(it);
+		});
+
 		coletaRepository.deleteById(id);
 	}
 

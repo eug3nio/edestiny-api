@@ -26,11 +26,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.up.edestiny.api.event.RecursoCriadoEvent;
 import br.com.up.edestiny.api.model.Detentor;
-import br.com.up.edestiny.api.model.Endereco;
 import br.com.up.edestiny.api.repository.DetentorRepository;
 import br.com.up.edestiny.api.repository.EnderecoRespository;
 import br.com.up.edestiny.api.service.DetentorService;
-import br.com.up.edestiny.api.service.UsuarioService;
 
 @RestController
 @RequestMapping("/detentor")
@@ -76,9 +74,7 @@ public class DetentorResource implements Serializable {
 			return ResponseEntity.status(HttpStatus.OK).body(detentorExistente.get());
 		}
 
-		for (Endereco item : detentor.getEnderecos()) {
-			enderecoRespository.save(item);
-		}
+		enderecoRespository.save(detentor.getEndereco());
 
 		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 		detentor.setSenha(encoder.encode(detentor.getSenha()));

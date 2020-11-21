@@ -1,16 +1,15 @@
 package br.com.up.edestiny.api.model;
 
 import java.io.Serializable;
-import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
@@ -46,9 +45,9 @@ public class Detentor implements Serializable {
 	@Column(name = "foto_perfil")
 	private byte[] fotoPerfil;
 
-	@OneToMany
-	@JoinTable(name = "endereco_detentor", joinColumns = @JoinColumn(name = "detentor_id"), inverseJoinColumns = @JoinColumn(name = "endereco_id"))
-	private List<Endereco> enderecos;
+	@OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+	@JoinColumn(name = "endereco_id")
+	private Endereco endereco;
 
 	public Long getId() {
 		return id;
@@ -98,12 +97,12 @@ public class Detentor implements Serializable {
 		this.fotoPerfil = fotoPerfil;
 	}
 
-	public List<Endereco> getEnderecos() {
-		return enderecos;
+	public Endereco getEndereco() {
+		return endereco;
 	}
 
-	public void setEnderecos(List<Endereco> enderecos) {
-		this.enderecos = enderecos;
+	public void setEndereco(Endereco endereco) {
+		this.endereco = endereco;
 	}
 
 	@Override
