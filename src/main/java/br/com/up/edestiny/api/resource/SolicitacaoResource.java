@@ -13,6 +13,8 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -34,6 +36,7 @@ import br.com.up.edestiny.api.repository.CategoriaRepository;
 import br.com.up.edestiny.api.repository.DetentorRepository;
 import br.com.up.edestiny.api.repository.ResiduoRepository;
 import br.com.up.edestiny.api.repository.SolicitacaoRepository;
+import br.com.up.edestiny.api.repository.dto.SolicitacaoDTO;
 
 @RestController
 @RequestMapping("/solicitacao")
@@ -46,7 +49,7 @@ public class SolicitacaoResource implements Serializable {
 
 	@Autowired
 	private DetentorRepository detentorRepository;
-	
+
 	@Autowired
 	private CategoriaRepository categoriaRepository;
 
@@ -57,8 +60,13 @@ public class SolicitacaoResource implements Serializable {
 	private ApplicationEventPublisher publisher;
 
 	@GetMapping
-	public List<Solicitacao> listar() {
-		return solicitacaoRepository.findAll();
+	public Page<Solicitacao> pesquisar(Pageable pageable) {
+		return solicitacaoRepository.filtrar(pageable);
+	}
+
+	@GetMapping(params = "resumo")
+	public Page<SolicitacaoDTO> resumir(Pageable pageable) {
+		return solicitacaoRepository.resumir(pageable);
 	}
 
 	@PostMapping
@@ -83,9 +91,9 @@ public class SolicitacaoResource implements Serializable {
 			}
 			residuos.add(residuoRepository.save(item));
 		}
-		
+
 		solicitacao.setResiduos(residuos);
-		
+
 		ZoneId zoneId = ZoneId.of("GMT");
 		LocalDate dtSolicitacao = LocalDate.now(zoneId);
 		solicitacao.setDtSolicitacao(dtSolicitacao);
