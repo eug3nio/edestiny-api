@@ -60,6 +60,12 @@ public class SolicitacaoResource implements Serializable {
 	public List<Solicitacao> listar() {
 		return solicitacaoRepository.findAll();
 	}
+	
+	@GetMapping("/findAllBySolicitante")
+	public List<Solicitacao> findAllBySolicitante(String email, HttpServletResponse response) {
+		Detentor solicitante = detentorRepository.findByEmail(email);
+		return solicitacaoRepository.findBySolicitante(solicitante);
+	}
 
 	@PostMapping
 	@ResponseStatus(code = HttpStatus.CREATED)

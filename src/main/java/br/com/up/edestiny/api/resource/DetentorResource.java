@@ -29,6 +29,8 @@ import br.com.up.edestiny.api.model.Detentor;
 import br.com.up.edestiny.api.model.Endereco;
 import br.com.up.edestiny.api.repository.DetentorRepository;
 import br.com.up.edestiny.api.repository.EnderecoRespository;
+import br.com.up.edestiny.api.service.DetentorService;
+import br.com.up.edestiny.api.service.UsuarioService;
 
 @RestController
 @RequestMapping("/detentor")
@@ -44,6 +46,10 @@ public class DetentorResource implements Serializable {
 
 	@Autowired
 	private ApplicationEventPublisher publisher;
+	
+	@Autowired
+	private DetentorService detentorService;
+
 
 	@GetMapping
 	public List<Detentor> listar() {
@@ -52,7 +58,7 @@ public class DetentorResource implements Serializable {
 	
 	@GetMapping(params = "findDetentorByEmail")
 	public ResponseEntity<Detentor> findDetentorByEmail(String email, HttpServletResponse response) {
-		Optional<Detentor> detentorExistente = detentorRepository.findByEmail(email);
+		Optional<Detentor> detentorExistente = Optional.of(detentorRepository.findByEmail(email));
 
 		if (detentorExistente.isPresent()) {
 			return ResponseEntity.status(HttpStatus.OK).body(detentorExistente.get());
@@ -64,7 +70,7 @@ public class DetentorResource implements Serializable {
 	@PostMapping("/novoDetentor")
 	@ResponseStatus(code = HttpStatus.CREATED)
 	public ResponseEntity<Detentor> novoDetentor(@Valid @RequestBody Detentor detentor, HttpServletResponse response) {
-		Optional<Detentor> detentorExistente = detentorRepository.findByEmail(detentor.getEmail());
+		Optional<Detentor> detentorExistente = Optional.of(detentorRepository.findByEmail(detentor.getEmail()));
 
 		if (detentorExistente.isPresent()) {
 			return ResponseEntity.status(HttpStatus.OK).body(detentorExistente.get());
@@ -103,5 +109,11 @@ public class DetentorResource implements Serializable {
 		BeanUtils.copyProperties(detentor, detentorSalva, "codigo");
 
 		return ResponseEntity.ok(this.detentorRepository.save(detentorSalva));
+	}
+	
+	@PostMapping("/recuperarSenha")
+	@ResponseStatus(code = HttpStatus.OK)
+	public void recuperarSenha(@RequestBody String email) {
+		detentorService.recuperarSenha(email);
 	}
 }

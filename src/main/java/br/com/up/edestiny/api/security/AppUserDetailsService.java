@@ -43,7 +43,7 @@ public class AppUserDetailsService implements UserDetailsService {
 					getPermissoes(usuario.get().getPermissoes()));
 		}
 
-		Optional<Detentor> detentor = detentorRepository.findByEmail(email);
+		Optional<Detentor> detentor = Optional.of(detentorRepository.findByEmail(email));
 
 		if (detentor.isPresent()) {
 			return new UsuarioSistema(detentor.get().getNome(), email, detentor.get().getSenha(), true, true, true,
