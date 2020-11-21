@@ -36,7 +36,7 @@ public class Coleta implements Serializable {
 	@JoinColumn(name = "coletor_id")
 	private Coletor coletor;
 
-	@OneToMany(mappedBy = "coleta", orphanRemoval = true)
+	@OneToMany(mappedBy = "coleta")
 	@JsonIgnoreProperties({ "coleta" })
 	private List<Solicitacao> solicitacoes;
 

@@ -8,6 +8,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -96,13 +97,17 @@ public class ColetaResource implements Serializable {
 	public void removerColeta(@PathVariable Long id) {
 		Optional<Coleta> optColeta = coletaRepository.findById(id);
 
-		optColeta.get().getSolicitacoes().forEach(it -> {
-			it.setColeta(null);
-			it.setSituacao(SituacaoSolicitacao.ABERTA);
-			solicitacaoRepository.save(it);
-		});
+		if (optColeta.isPresent()) {
+			optColeta.get().getSolicitacoes().forEach(it -> {
+				it.setColeta(null);
+				it.setSituacao(SituacaoSolicitacao.ABERTA);
+				solicitacaoRepository.save(it);
+			});
 
-		coletaRepository.deleteById(id);
+			coletaRepository.deleteById(id);
+		} else {
+			throw new EmptyResultDataAccessException(1);
+		}
 	}
 
 	@PutMapping("/{id}")

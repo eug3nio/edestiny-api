@@ -1,7 +1,7 @@
 package br.com.up.edestiny.api.service;
 
-import java.io.IOException;
 import java.io.Serializable;
+import java.text.Normalizer;
 import java.time.LocalDate;
 import java.util.Optional;
 
@@ -12,14 +12,14 @@ import org.springframework.stereotype.Service;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.maps.DirectionsApi;
 import com.google.maps.GeoApiContext;
-import com.google.maps.GeocodingApi;
-import com.google.maps.errors.ApiException;
-import com.google.maps.model.GeocodingResult;
+import com.google.maps.model.DirectionsResult;
 
 import br.com.up.edestiny.api.config.EdestinyApiProperty;
 import br.com.up.edestiny.api.model.Coleta;
 import br.com.up.edestiny.api.model.Detentor;
+import br.com.up.edestiny.api.model.Endereco;
 import br.com.up.edestiny.api.model.Percurso;
 import br.com.up.edestiny.api.model.Solicitacao;
 import br.com.up.edestiny.api.model.enums.SituacaoSolicitacao;
@@ -80,6 +80,8 @@ public class ColetaService implements Serializable {
 	 * @param id
 	 */
 	public void gerarPercurso(Long id) {
+		GeoApiContext context = new GeoApiContext.Builder().apiKey(edestinyApiProperty.getApiKeyGoogle()).build();
+
 		Optional<Coleta> optColeta = coletaRepository.findById(id);
 
 		if (optColeta.isPresent()) {
@@ -87,26 +89,42 @@ public class ColetaService implements Serializable {
 			percurso.setDtCriacao(LocalDate.now());
 			percurso.setColeta(optColeta.get());
 
+			Endereco enderecoColetor = optColeta.get().getColetor().getEndereco();
+			String enderecoOrigin = obterEnderecoFormatado(enderecoColetor);
+
 			for (Solicitacao solicitacao : optColeta.get().getSolicitacoes()) {
 				Detentor solicitante = solicitacao.getSolicitante();
 				if (solicitante.getEndereco() != null) {
-					try {
-					GeoApiContext context = new GeoApiContext.Builder().apiKey(edestinyApiProperty.getApiKeyGoogle())
-							.build();
-					GeocodingResult[] results;
-						results = GeocodingApi.geocode(context, "1600 Amphitheatre Parkway Mountain View, CA 94043")
-								.await();
+					DirectionsResult result = DirectionsApi
+							.getDirections(context, enderecoOrigin, obterEnderecoFormatado(solicitante.getEndereco()))
+							.awaitIgnoreError();
+
 					Gson gson = new GsonBuilder().setPrettyPrinting().create();
-					System.out.println(gson.toJson(results[0].addressComponents));
-				} catch (ApiException | InterruptedException | IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+					System.out.println(gson.toJson(result));
 				}
 			}
 		} else {
 			throw new EmptyResultDataAccessException(1);
 		}
+	}
+
+	/**
+	 * 
+	 * @param endereco
+	 * @return
+	 */
+	private String obterEnderecoFormatado(Endereco endereco) {
+		return removerAcentos(endereco.getLogradouro().replace(" ", "_") + "_" + endereco.getNumero() + "_"
+				+ endereco.getCidade() + "_" + endereco.getEstado()).toLowerCase();
+	}
+
+	/**
+	 * 
+	 * @param str
+	 * @return
+	 */
+	private String removerAcentos(String str) {
+		return Normalizer.normalize(str, Normalizer.Form.NFD).replaceAll("[^\\p{ASCII}]", "");
 	}
 
 }
