@@ -38,7 +38,7 @@ public class Solicitacao implements Serializable {
 
 	@OneToMany(mappedBy = "solicitacao", orphanRemoval = true)
 	@JsonIgnoreProperties({ "solicitacao" })
-	private List<Residuo> residuos;	
+	private List<Residuo> residuos;
 
 	@Enumerated(EnumType.STRING)
 	private SituacaoSolicitacao situacao;
@@ -52,6 +52,8 @@ public class Solicitacao implements Serializable {
 	@JoinColumn(name = "coleta_id", referencedColumnName = "id")
 	@JsonIgnoreProperties({ "solicitacoes" })
 	private Coleta coleta;
+
+	private Integer distancia;
 
 	public Long getId() {
 		return id;
@@ -109,6 +111,14 @@ public class Solicitacao implements Serializable {
 		this.coleta = coleta;
 	}
 
+	public Integer getDistancia() {
+		return distancia;
+	}
+
+	public void setDistancia(Integer distancia) {
+		this.distancia = distancia;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -129,6 +139,10 @@ public class Solicitacao implements Serializable {
 		if (id != other.id)
 			return false;
 		return true;
+	}
+
+	public int compareTo(Solicitacao item) {
+		return this.distancia - item.getDistancia();
 	}
 
 }

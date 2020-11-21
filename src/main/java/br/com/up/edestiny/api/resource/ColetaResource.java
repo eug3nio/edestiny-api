@@ -1,6 +1,7 @@
 package br.com.up.edestiny.api.resource;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Optional;
 
 import javax.servlet.http.HttpServletResponse;
@@ -25,10 +26,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.up.edestiny.api.event.RecursoCriadoEvent;
 import br.com.up.edestiny.api.model.Coleta;
+import br.com.up.edestiny.api.model.Percurso;
 import br.com.up.edestiny.api.model.Solicitacao;
 import br.com.up.edestiny.api.model.enums.SituacaoColeta;
 import br.com.up.edestiny.api.model.enums.SituacaoSolicitacao;
 import br.com.up.edestiny.api.repository.ColetaRepository;
+import br.com.up.edestiny.api.repository.PercursoRepository;
 import br.com.up.edestiny.api.repository.SolicitacaoRepository;
 import br.com.up.edestiny.api.repository.dto.ColetaDTO;
 import br.com.up.edestiny.api.repository.filter.ColetaFilter;
@@ -45,6 +48,9 @@ public class ColetaResource implements Serializable {
 
 	@Autowired
 	private SolicitacaoRepository solicitacaoRepository;
+
+	@Autowired
+	private PercursoRepository percursoRepository;
 
 	@Autowired
 	private ColetaService coletaService;
@@ -70,8 +76,14 @@ public class ColetaResource implements Serializable {
 	}
 
 	@GetMapping("/gerarPercurso/{id}")
-	public void gerarPercurso(@PathVariable Long id) {
+	public ResponseEntity<Coleta> gerarPercurso(@PathVariable Long id) {
 		coletaService.gerarPercurso(id);
+		return ResponseEntity.ok().build();
+	}
+
+	@GetMapping("/visualizarPercurso/{id}")
+	public ResponseEntity<String> visulizarPercurso(@PathVariable Long id) {
+		return ResponseEntity.ok(coletaService.visualizarPercurso(id));
 	}
 
 	@PostMapping
@@ -103,6 +115,9 @@ public class ColetaResource implements Serializable {
 				it.setSituacao(SituacaoSolicitacao.ABERTA);
 				solicitacaoRepository.save(it);
 			});
+
+			List<Percurso> percurso = percursoRepository.findByColeta(optColeta.get());
+			percurso.forEach(it -> percursoRepository.delete(it));
 
 			coletaRepository.deleteById(id);
 		} else {

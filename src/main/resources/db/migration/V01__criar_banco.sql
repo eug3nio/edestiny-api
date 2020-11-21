@@ -7,6 +7,8 @@ CREATE TABLE endereco (
 	cep VARCHAR(8),
 	cidade VARCHAR(255),
 	estado VARCHAR(50),
+	latitude VARCHAR(50),
+	longitude VARCHAR(50),
   PRIMARY KEY (id)
 ) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8;
 
@@ -60,6 +62,7 @@ CREATE TABLE solicitacao (
 	situacao VARCHAR(255) NOT NULL,
     coleta_id FLOAT,
 	justificativa TEXT,
+    distancia BIGINT,
 	PRIMARY KEY (id),
   	FOREIGN KEY (solicitante_id) REFERENCES detentor(id),
   	FOREIGN KEY (coleta_id) REFERENCES coleta(id)

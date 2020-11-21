@@ -26,6 +26,9 @@ public class Endereco implements Serializable {
 	private String estado;
 	private String cep;
 
+	private String latitude;
+	private String longitude;
+
 	public Long getId() {
 		return id;
 	}
@@ -88,6 +91,22 @@ public class Endereco implements Serializable {
 
 	public void setCep(String cep) {
 		this.cep = cep;
+	}
+
+	public String getLatitude() {
+		return latitude;
+	}
+
+	public void setLatitude(String latitude) {
+		this.latitude = latitude;
+	}
+
+	public String getLongitude() {
+		return longitude;
+	}
+
+	public void setLongitude(String longitude) {
+		this.longitude = longitude;
 	}
 
 	@Override

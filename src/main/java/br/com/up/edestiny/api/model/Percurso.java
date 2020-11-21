@@ -13,6 +13,8 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 @Entity
 @Table(name = "percurso")
 public class Percurso implements Serializable {
@@ -26,13 +28,13 @@ public class Percurso implements Serializable {
 	@OneToOne
 	@JoinColumn(name = "coleta_id")
 	@NotNull
+	@JsonIgnoreProperties({ "percurso" })
 	private Coleta coleta;
 
 	@NotNull
 	@Column(name = "dt_criacao")
 	private LocalDate dtCriacao;
 
-	@NotNull
 	@Column(name = "json_percurso")
 	private String jsonPercurso;
 

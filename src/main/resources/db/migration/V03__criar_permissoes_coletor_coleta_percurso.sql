@@ -15,7 +15,7 @@ CREATE TABLE percurso (
 	id FLOAT NOT NULL AUTO_INCREMENT,
 	coleta_id FLOAT NOT NULL,
 	dt_criacao DATE NOT NULL,
-	json_percurso TEXT NOT NULL,
+	json_percurso TEXT,
 	PRIMARY KEY (id),
   	FOREIGN KEY (coleta_id) REFERENCES coleta(id)
 ) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8;
