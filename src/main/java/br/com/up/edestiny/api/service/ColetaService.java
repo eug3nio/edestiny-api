@@ -27,6 +27,12 @@ public class ColetaService implements Serializable {
 	@Autowired
 	private SolicitacaoRepository solicitacaoRepository;
 
+	/**
+	 * 
+	 * @param id
+	 * @param coleta
+	 * @return
+	 */
 	public Coleta atualizarColeta(Long id, Coleta coleta) {
 		Optional<Coleta> coletaSalva = coletaRepository.findById(id);
 
@@ -48,6 +54,20 @@ public class ColetaService implements Serializable {
 
 			BeanUtils.copyProperties(coleta, coletaSalva.get(), "id", "solicitacoes");
 			return coletaRepository.save(coletaSalva.get());
+		} else {
+			throw new EmptyResultDataAccessException(1);
+		}
+	}
+
+	/**
+	 * 
+	 * @param id
+	 */
+	public void gerarPercurso(Long id) {
+		Optional<Coleta> optColeta = coletaRepository.findById(id);
+
+		if (optColeta.isPresent()) {
+
 		} else {
 			throw new EmptyResultDataAccessException(1);
 		}

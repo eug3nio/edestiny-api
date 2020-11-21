@@ -68,6 +68,11 @@ public class ColetaResource implements Serializable {
 				: ResponseEntity.notFound().build();
 	}
 
+	@GetMapping("/gerarPercurso/{id}")
+	public void gerarPercurso(@PathVariable Long id) {
+		coletaService.gerarPercurso(id);
+	}
+
 	@PostMapping
 	@ResponseStatus(code = HttpStatus.CREATED)
 	public ResponseEntity<Coleta> criarColeta(@Valid @RequestBody Coleta coleta, HttpServletResponse response) {
