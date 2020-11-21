@@ -3,8 +3,10 @@ package br.com.up.edestiny.api.service;
 import java.io.Serializable;
 import java.util.Optional;
 
+import org.springframework.amqp.core.Queue;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
@@ -18,7 +20,12 @@ public class UrnaService implements Serializable {
 
 	@Autowired
 	private UrnaRepository urnaRepository;
-
+	
+	@Bean
+	public Queue filaLeituraObjetos() {
+	    return new Queue("urna-recebimento", false);
+	}
+	
 	/**
 	 * 
 	 * @param id

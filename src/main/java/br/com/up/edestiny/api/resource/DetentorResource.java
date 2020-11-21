@@ -58,7 +58,7 @@ public class DetentorResource implements Serializable {
 	
 	@GetMapping(params = "findDetentorByEmail")
 	public ResponseEntity<Detentor> findDetentorByEmail(String email, HttpServletResponse response) {
-		Optional<Detentor> detentorExistente = Optional.of(detentorRepository.findByEmail(email));
+		Optional<Detentor> detentorExistente = detentorRepository.findByEmail(email);
 
 		if (detentorExistente.isPresent()) {
 			return ResponseEntity.status(HttpStatus.OK).body(detentorExistente.get());
@@ -70,7 +70,7 @@ public class DetentorResource implements Serializable {
 	@PostMapping("/novoDetentor")
 	@ResponseStatus(code = HttpStatus.CREATED)
 	public ResponseEntity<Detentor> novoDetentor(@Valid @RequestBody Detentor detentor, HttpServletResponse response) {
-		Optional<Detentor> detentorExistente = Optional.of(detentorRepository.findByEmail(detentor.getEmail()));
+		Optional<Detentor> detentorExistente = detentorRepository.findByEmail(detentor.getEmail());
 
 		if (detentorExistente.isPresent()) {
 			return ResponseEntity.status(HttpStatus.OK).body(detentorExistente.get());
