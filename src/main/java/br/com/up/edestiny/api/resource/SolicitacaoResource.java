@@ -37,6 +37,7 @@ import br.com.up.edestiny.api.repository.DetentorRepository;
 import br.com.up.edestiny.api.repository.ResiduoRepository;
 import br.com.up.edestiny.api.repository.SolicitacaoRepository;
 import br.com.up.edestiny.api.repository.dto.SolicitacaoDTO;
+import br.com.up.edestiny.api.repository.filter.SolicitacaoFilter;
 
 @RestController
 @RequestMapping("/solicitacao")
@@ -60,13 +61,13 @@ public class SolicitacaoResource implements Serializable {
 	private ApplicationEventPublisher publisher;
 
 	@GetMapping
-	public Page<Solicitacao> pesquisar(Pageable pageable) {
-		return solicitacaoRepository.filtrar(pageable);
+	public Page<Solicitacao> pesquisar(SolicitacaoFilter filter, Pageable pageable) {
+		return solicitacaoRepository.filtrar(filter, pageable);
 	}
 
 	@GetMapping(params = "resumo")
-	public Page<SolicitacaoDTO> resumir(Pageable pageable) {
-		return solicitacaoRepository.resumir(pageable);
+	public Page<SolicitacaoDTO> resumir(SolicitacaoFilter filter, Pageable pageable) {
+		return solicitacaoRepository.resumir(filter, pageable);
 	}
 
 	@PostMapping

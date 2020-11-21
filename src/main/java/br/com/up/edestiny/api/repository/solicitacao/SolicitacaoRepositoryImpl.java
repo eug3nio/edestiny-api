@@ -11,6 +11,7 @@ import org.springframework.data.domain.Pageable;
 import br.com.up.edestiny.api.model.Solicitacao;
 import br.com.up.edestiny.api.model.enums.SituacaoSolicitacao;
 import br.com.up.edestiny.api.repository.dto.SolicitacaoDTO;
+import br.com.up.edestiny.api.repository.filter.SolicitacaoFilter;
 
 @SuppressWarnings("unchecked")
 public class SolicitacaoRepositoryImpl implements SolicitacaoRepositoryQuery {
@@ -19,45 +20,50 @@ public class SolicitacaoRepositoryImpl implements SolicitacaoRepositoryQuery {
 	private EntityManager manager;
 
 	@Override
-	public Page<Solicitacao> filtrar(Pageable pageable) {
+	public Page<Solicitacao> filtrar(SolicitacaoFilter filter, Pageable pageable) {
 		StringBuilder sql = new StringBuilder();
 
 		sql.append("SELECT s FROM Solicitacao s ");
-		sql.append(getWhere());
+		sql.append(getWhere(filter));
 
 		Query q = manager.createQuery(sql.toString());
 
-		setParameter(q);
+		setParameter(q, filter);
 
 		adicionarRestricoesDePaginacao(q, pageable);
 
-		return new PageImpl<>(q.getResultList(), pageable, total());
+		return new PageImpl<>(q.getResultList(), pageable, total(filter));
 	}
 
 	@Override
-	public Page<SolicitacaoDTO> resumir(Pageable pageable) {
+	public Page<SolicitacaoDTO> resumir(SolicitacaoFilter filter, Pageable pageable) {
 		StringBuilder sql = new StringBuilder();
 
 		sql.append("SELECT new br.com.up.edestiny.api.repository.dto.SolicitacaoDTO(s) FROM Solicitacao s ");
-		sql.append(getWhere());
+		sql.append(getWhere(filter));
 
 		Query q = manager.createQuery(sql.toString());
 
-		setParameter(q);
+		setParameter(q, filter);
 
 		adicionarRestricoesDePaginacao(q, pageable);
 
-		return new PageImpl<>(q.getResultList(), pageable, total());
+		return new PageImpl<>(q.getResultList(), pageable, total(filter));
 	}
 
 	/**
 	 * 
 	 * @return
 	 */
-	private String getWhere() {
+	private String getWhere(SolicitacaoFilter filter) {
 		StringBuilder where = new StringBuilder();
 
-		where.append(" WHERE s.situacao = :situacao ");
+		if (filter.getIdColeta() != null) {
+			where.append(" WHERE (s.coleta.id = :idColeta ");
+			where.append(" OR s.situacao = :situacao ) ");
+		} else {
+			where.append(" WHERE s.situacao = :situacao ");
+		}
 
 		return where.toString();
 	}
@@ -66,8 +72,13 @@ public class SolicitacaoRepositoryImpl implements SolicitacaoRepositoryQuery {
 	 * 
 	 * @param q
 	 */
-	private void setParameter(Query q) {
+	private void setParameter(Query q, SolicitacaoFilter filter) {
+		if (filter.getIdColeta() != null) {
+			q.setParameter("idColeta", Long.parseLong(filter.getIdColeta()));
+		}
+
 		q.setParameter("situacao", SituacaoSolicitacao.ABERTA);
+
 	}
 
 	/**
@@ -75,12 +86,14 @@ public class SolicitacaoRepositoryImpl implements SolicitacaoRepositoryQuery {
 	 * @param filter
 	 * @return
 	 */
-	private Long total() {
+	private Long total(SolicitacaoFilter filter) {
 		StringBuilder sql = new StringBuilder();
 
 		sql.append("SELECT COUNT(s) FROM Solicitacao s ");
+		sql.append(getWhere(filter));
 
 		Query q = manager.createQuery(sql.toString());
+		setParameter(q, filter);
 
 		Number result = q.getFirstResult();
 

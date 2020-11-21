@@ -5,10 +5,11 @@ import org.springframework.data.domain.Pageable;
 
 import br.com.up.edestiny.api.model.Solicitacao;
 import br.com.up.edestiny.api.repository.dto.SolicitacaoDTO;
+import br.com.up.edestiny.api.repository.filter.SolicitacaoFilter;
 
 public interface SolicitacaoRepositoryQuery {
 
-	public Page<Solicitacao> filtrar(Pageable pageable);
+	public Page<Solicitacao> filtrar(SolicitacaoFilter filter, Pageable pageable);
 
-	public Page<SolicitacaoDTO> resumir(Pageable pageable);
+	public Page<SolicitacaoDTO> resumir(SolicitacaoFilter filter, Pageable pageable);
 }

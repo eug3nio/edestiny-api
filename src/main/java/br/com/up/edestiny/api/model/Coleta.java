@@ -43,7 +43,6 @@ public class Coleta implements Serializable {
 	@Enumerated(EnumType.STRING)
 	private SituacaoColeta situacao;
 
-	@NotNull
 	@Column(name = "dt_movimentacao")
 	private LocalDate dtMovimentacao;
 

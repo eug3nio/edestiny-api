@@ -1,7 +1,7 @@
 package br.com.up.edestiny.api.repository.dto;
 
 import java.io.Serializable;
-import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 import br.com.up.edestiny.api.model.Solicitacao;
 
@@ -13,13 +13,13 @@ public class SolicitacaoDTO implements Serializable {
 	private String solicitante;
 	private String endereco;
 	private Integer qtdResiduos;
-	private LocalDate dtSolicitacao;
+	private String dtSolicitacao;
 
 	public SolicitacaoDTO(Solicitacao solicitacao) {
 		this.id = solicitacao.getId();
 		this.solicitante = solicitacao.getSolicitante().getNome();
 		this.qtdResiduos = solicitacao.getResiduos().size();
-		this.dtSolicitacao = solicitacao.getDtSolicitacao();
+		this.dtSolicitacao = solicitacao.getDtSolicitacao().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
 	}
 
 	public Long getId() {
@@ -54,11 +54,11 @@ public class SolicitacaoDTO implements Serializable {
 		this.qtdResiduos = qtdResiduos;
 	}
 
-	public LocalDate getDtSolicitacao() {
+	public String getDtSolicitacao() {
 		return dtSolicitacao;
 	}
 
-	public void setDtSolicitacao(LocalDate dtSolicitacao) {
+	public void setDtSolicitacao(String dtSolicitacao) {
 		this.dtSolicitacao = dtSolicitacao;
 	}
 

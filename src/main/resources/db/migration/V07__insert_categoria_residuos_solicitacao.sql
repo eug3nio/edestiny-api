@@ -36,20 +36,20 @@ VALUES
 
 INSERT INTO `edestiny`.`solicitacao`(`solicitante_id`,`situacao`,`coleta_id`,`justificativa`,`dt_solicitacao`)
 VALUES
-('1','0',null,null,'2020-11-20');
+('1','ABERTA',null,null,'2020-11-20');
 
 INSERT INTO `edestiny`.`solicitacao`(`solicitante_id`,`situacao`,`coleta_id`,`justificativa`,`dt_solicitacao`)
 VALUES
-('2','0',null,null,'2020-11-21');
+('2','ABERTA',null,null,'2020-11-21');
 
 
 INSERT INTO `edestiny`.`solicitacao`(`solicitante_id`,`situacao`,`coleta_id`,`justificativa`,`dt_solicitacao`)
 VALUES
-('3','0',null,null,'2020-11-22');
+('3','ABERTA',null,null,'2020-11-22');
 
 INSERT INTO `edestiny`.`solicitacao`(`solicitante_id`,`situacao`,`coleta_id`,`justificativa`,`dt_solicitacao`)
 VALUES
-('4','0',null,null,'2020-11-23');
+('4','ABERTA',null,null,'2020-11-23');
 SELECT * FROM edestiny.solicitacao;
 
 --Insert de Residuos

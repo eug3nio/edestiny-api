@@ -33,6 +33,7 @@ public class Solicitacao implements Serializable {
 
 	@ManyToOne
 	@JoinColumn(name = "solicitante_id")
+	@JsonIgnoreProperties({ "enderecos" })
 	private Detentor solicitante;
 
 	@OneToMany(mappedBy = "solicitacao", orphanRemoval = true)

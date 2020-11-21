@@ -53,7 +53,7 @@ CREATE TABLE coleta (
   id FLOAT NOT NULL AUTO_INCREMENT,
   coletor_id FLOAT NOT NULL,
   situacao VARCHAR(255),
-  dt_movimentacao DATE NOT NULL,
+  dt_movimentacao DATE,
   dt_prevista_coleta DATE NOT NULL,
   PRIMARY KEY (id),
   FOREIGN KEY (coletor_id) REFERENCES coletor(id)
