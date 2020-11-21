@@ -97,6 +97,7 @@ public class ColetaResource implements Serializable {
 		Optional<Coleta> optColeta = coletaRepository.findById(id);
 
 		optColeta.get().getSolicitacoes().forEach(it -> {
+			it.setColeta(null);
 			it.setSituacao(SituacaoSolicitacao.ABERTA);
 			solicitacaoRepository.save(it);
 		});
