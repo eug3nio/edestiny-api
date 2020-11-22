@@ -126,7 +126,12 @@ public class ColetaResource implements Serializable {
 	}
 
 	@PutMapping("/{id}")
-	public ResponseEntity<Coleta> atualizarUsuario(@PathVariable Long id, @Valid @RequestBody Coleta coleta) {
+	public ResponseEntity<Coleta> atualizarColeta(@PathVariable Long id, @Valid @RequestBody Coleta coleta) {
 		return ResponseEntity.status(HttpStatus.OK).body(coletaService.atualizarColeta(id, coleta));
+	}
+
+	@GetMapping("/finalizar/{id}")
+	public ResponseEntity<Coleta> finalizarColeta(@PathVariable Long id) {
+		return ResponseEntity.status(HttpStatus.OK).body(coletaService.finalizarColeta(id));
 	}
 }

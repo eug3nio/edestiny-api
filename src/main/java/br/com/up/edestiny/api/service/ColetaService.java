@@ -95,6 +95,38 @@ public class ColetaService implements Serializable {
 	/**
 	 * 
 	 * @param id
+	 * @return
+	 */
+	public Coleta finalizarColeta(Long id) {
+		Optional<Coleta> coletaSalva = coletaRepository.findById(id);
+
+		if (coletaSalva.isPresent()) {
+			boolean finalizar = true;
+
+			for (Solicitacao item : coletaSalva.get().getSolicitacoes()) {
+				if (item.getSituacao().equals(SituacaoSolicitacao.EM_ATENDIMENTO)) {
+					finalizar = false;
+					break;
+				}
+			}
+
+			if (finalizar) {
+				coletaSalva.get().setSituacao(SituacaoColeta.FINALIZADA);
+
+				for (Solicitacao item : coletaSalva.get().getSolicitacoes()) {
+					item.setSituacao(SituacaoSolicitacao.FINALIZADA);
+				}
+			}
+
+			return coletaRepository.save(coletaSalva.get());
+		} else {
+			throw new EmptyResultDataAccessException(1);
+		}
+	}
+
+	/**
+	 * 
+	 * @param id
 	 */
 	public String visualizarPercurso(Long id) {
 		Optional<Coleta> optColeta = coletaRepository.findById(id);
@@ -154,7 +186,7 @@ public class ColetaService implements Serializable {
 		if (optColeta.isPresent()) {
 			Coleta coleta = optColeta.get();
 			coleta.setSituacao(SituacaoColeta.EM_ANDAMENTO);
-			
+
 			Percurso percurso = new Percurso();
 			percurso.setDtCriacao(LocalDate.now());
 			percurso.setColeta(coleta);

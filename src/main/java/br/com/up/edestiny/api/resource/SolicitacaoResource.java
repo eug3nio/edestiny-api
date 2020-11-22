@@ -33,6 +33,7 @@ import br.com.up.edestiny.api.model.Residuo;
 import br.com.up.edestiny.api.model.Solicitacao;
 import br.com.up.edestiny.api.model.enums.SituacaoSolicitacao;
 import br.com.up.edestiny.api.repository.CategoriaRepository;
+import br.com.up.edestiny.api.repository.ColetaRepository;
 import br.com.up.edestiny.api.repository.DetentorRepository;
 import br.com.up.edestiny.api.repository.ResiduoRepository;
 import br.com.up.edestiny.api.repository.SolicitacaoRepository;
@@ -58,6 +59,9 @@ public class SolicitacaoResource implements Serializable {
 	private ResiduoRepository residuoRepository;
 
 	@Autowired
+	private ColetaRepository coletaRepository;
+
+	@Autowired
 	private ApplicationEventPublisher publisher;
 
 	@GetMapping
@@ -69,11 +73,16 @@ public class SolicitacaoResource implements Serializable {
 	public Page<SolicitacaoDTO> resumir(SolicitacaoFilter filter, Pageable pageable) {
 		return solicitacaoRepository.resumir(filter, pageable);
 	}
-	
+
 	@GetMapping("/findAllBySolicitante")
 	public List<Solicitacao> findAllBySolicitante(String email, HttpServletResponse response) {
 		Optional<Detentor> solicitante = detentorRepository.findByEmail(email);
 		return solicitacaoRepository.findBySolicitante(solicitante.get());
+	}
+
+	@GetMapping("/findAllByColeta/{id}")
+	public List<Solicitacao> findAllByColeta(@PathVariable Long id, HttpServletResponse response) {
+		return solicitacaoRepository.findByColeta(coletaRepository.findById(id).get());
 	}
 
 	@PostMapping

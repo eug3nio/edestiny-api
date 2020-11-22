@@ -18,6 +18,8 @@ public class SolicitacaoDTO implements Serializable {
 	public SolicitacaoDTO(Solicitacao solicitacao) {
 		this.id = solicitacao.getId();
 		this.solicitante = solicitacao.getSolicitante().getNome();
+		this.endereco = solicitacao.getSolicitante().getEndereco().getLogradouro() + ", "
+				+ solicitacao.getSolicitante().getEndereco().getNumero();
 		this.qtdResiduos = solicitacao.getResiduos().size();
 		this.dtSolicitacao = solicitacao.getDtSolicitacao().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
 	}
