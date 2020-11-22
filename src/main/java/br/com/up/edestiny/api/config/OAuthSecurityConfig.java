@@ -28,8 +28,8 @@ public class OAuthSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Bean(name = BeanIds.AUTHENTICATION_MANAGER)
 	@Override
-	public AuthenticationManager authenticationManager() throws Exception {
-		return super.authenticationManager();
+	public AuthenticationManager authenticationManagerBean() throws Exception {
+		return super.authenticationManagerBean();
 	}
 
 	@Bean
