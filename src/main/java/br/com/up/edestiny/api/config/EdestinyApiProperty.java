@@ -7,7 +7,7 @@ public class EdestinyApiProperty {
 
 	private String originPermitidaDetentor = "http://localhost:4200";
 
-	private String originPermitidaMonitoramento = "http://localhost:4200";
+	private String originPermitidaMonitoramento = "http://localhost:4401";
 
 	private String originPermitidaColetor = "http://localhost:4200";
 

@@ -31,7 +31,7 @@ public class CorsFilter implements Filter {
 		HttpServletResponse response = (HttpServletResponse) resp;
 
 		String[] allowedOrigins = { edestinyApiProperty.getOriginPermitidaColetor(),
-				edestinyApiProperty.getOriginPermitidaDetentor(), edestinyApiProperty.getOriginPermitidaDetentor() };
+				edestinyApiProperty.getOriginPermitidaMonitoramento(), edestinyApiProperty.getOriginPermitidaDetentor() };
 		String origin = request.getHeader("Origin");
 
 		response.setHeader("Access-Control-Allow-Credentials", "true");
