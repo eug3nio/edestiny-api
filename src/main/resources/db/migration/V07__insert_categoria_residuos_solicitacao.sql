@@ -1,6 +1,4 @@
 --Insert de Categorias
-
-
 INSERT INTO categoria (descricao,ativo)
 VALUES
 ('Smartphone', '1');
@@ -46,7 +44,7 @@ VALUES
 ('Pedro','pedro@hotmail.com','123','11111111',null, (SELECT id FROM endereco WHERE cep = '81490476'));
 
 
---Inseert de Solicitações
+--Insert de Solicitações
 
 INSERT INTO solicitacao(solicitante_id,situacao,coleta_id,justificativa,dt_solicitacao)
 VALUES
