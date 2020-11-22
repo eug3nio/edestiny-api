@@ -23,7 +23,6 @@ import br.com.up.edestiny.api.config.token.CustomTokenEnhancer;
 @EnableAuthorizationServer
 public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdapter {
 
-	@Autowired
 	private AuthenticationManager authenticationManager;
 
 	@Autowired
@@ -64,6 +63,11 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 	@Bean
 	public TokenStore tokenStore() {
 		return new JwtTokenStore(accessTokenConverter());
+	}
+	
+	@Bean
+	public AuthenticationManager customAuthenticationManager() throws Exception {
+	  return authenticationManager;
 	}
 	
 }
