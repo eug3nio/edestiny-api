@@ -30,18 +30,27 @@ public class CorsFilter implements Filter {
 		HttpServletRequest request = (HttpServletRequest) req;
 		HttpServletResponse response = (HttpServletResponse) resp;
 
-		response.setHeader("Access-Control-Allow-Origin", edestinyApiProperty.getOriginPermitida());
+		String[] allowedOrigins = { edestinyApiProperty.getOriginPermitidaColetor(),
+				edestinyApiProperty.getOriginPermitidaDetentor(), edestinyApiProperty.getOriginPermitidaDetentor() };
+		String origin = request.getHeader("Origin");
+
 		response.setHeader("Access-Control-Allow-Credentials", "true");
 
-		if ("OPTIONS".equals(request.getMethod())
-				&& edestinyApiProperty.getOriginPermitida().equals(request.getHeader("Origin"))) {
-			response.setHeader("Access-Control-Allow-Methods", "POST, GET, DELETE, PUT, OPTIONS");
-			response.setHeader("Access-Control-Allow-Headers", "Authorization, Content-Type, Accept");
-			response.setHeader("Access-Control-Max-Age", "3600");
+		for (String item : allowedOrigins) {
+			if (item.equals(origin)) {
+				response.setHeader("Access-Control-Allow-Origin", item);
 
-			response.setStatus(HttpServletResponse.SC_OK);
-		} else {
-			chain.doFilter(req, resp);
+				if ("OPTIONS".equals(request.getMethod())) {
+					response.setHeader("Access-Control-Allow-Methods", "POST, GET, DELETE, PUT, OPTIONS");
+					response.setHeader("Access-Control-Allow-Headers", "Authorization, Content-Type, Accept");
+					response.setHeader("Access-Control-Max-Age", "3600");
+
+					response.setStatus(HttpServletResponse.SC_OK);
+				} else {
+					chain.doFilter(req, resp);
+				}
+				break;
+			}
 		}
 
 	}
