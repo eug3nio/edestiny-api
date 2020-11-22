@@ -26,9 +26,6 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 	@Autowired
 	private AuthenticationManager authenticationManager;
 
-	@Autowired
-	private UserDetailsService userDetailsService;
-
 	@Override
 	public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
 		clients.inMemory().withClient("angular").secret("$2a$10$6/vPhE3O20K1vo8QsE.bM.Ny5UdALtkpv8JWuxBhaVe.wao6BujB.")
@@ -45,7 +42,6 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 			.tokenStore(tokenStore())
 			.tokenEnhancer(tokenEnhancerChain)
 			.reuseRefreshTokens(false)
-			.userDetailsService(this.userDetailsService)
 			.authenticationManager(authenticationManager);
 	}
 
