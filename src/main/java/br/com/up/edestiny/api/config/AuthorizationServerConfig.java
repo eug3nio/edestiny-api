@@ -23,7 +23,7 @@ import br.com.up.edestiny.api.config.token.CustomTokenEnhancer;
 @EnableAuthorizationServer
 public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdapter {
 
-	@Autowired(required = false)
+	@Autowired
 	private AuthenticationManager authenticationManager;
 
 	@Autowired

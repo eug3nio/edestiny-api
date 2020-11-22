@@ -23,7 +23,8 @@ public class OAuthSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Autowired
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-		auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
+		auth.parentAuthenticationManager(authenticationManagerBean()).userDetailsService(userDetailsService)
+				.passwordEncoder(passwordEncoder());
 	}
 
 	@Bean(name = BeanIds.AUTHENTICATION_MANAGER)
