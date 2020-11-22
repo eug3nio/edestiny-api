@@ -64,7 +64,6 @@ VALUES
 INSERT INTO solicitacao(solicitante_id,situacao,coleta_id,justificativa,dt_solicitacao)
 VALUES
 ('4','ABERTA',null,null,'2020-11-23');
-SELECT * FROM edestiny.solicitacao;
 
 --Insert de Residuos
 
