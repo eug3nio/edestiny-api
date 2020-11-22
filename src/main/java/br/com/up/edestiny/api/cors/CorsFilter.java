@@ -30,27 +30,32 @@ public class CorsFilter implements Filter {
 		HttpServletRequest request = (HttpServletRequest) req;
 		HttpServletResponse response = (HttpServletResponse) resp;
 
-		String[] allowedOrigins = { edestinyApiProperty.getOriginPermitidaColetor(),
-				edestinyApiProperty.getOriginPermitidaMonitoramento(), edestinyApiProperty.getOriginPermitidaDetentor() };
 		String origin = request.getHeader("Origin");
+
+		if (origin != null) {
+			if (origin.equals(edestinyApiProperty.getOriginPermitidaColetor())) {
+				response.setHeader("Access-Control-Allow-Origin", edestinyApiProperty.getOriginPermitidaColetor());
+			} else if (origin.equals(edestinyApiProperty.getOriginPermitidaMonitoramento())) {
+				response.setHeader("Access-Control-Allow-Origin",
+						edestinyApiProperty.getOriginPermitidaMonitoramento());
+			} else if (origin.equals(edestinyApiProperty.getOriginPermitidaDetentor())) {
+				response.setHeader("Access-Control-Allow-Origin", edestinyApiProperty.getOriginPermitidaDetentor());
+			}
+		}
 
 		response.setHeader("Access-Control-Allow-Credentials", "true");
 
-		for (String item : allowedOrigins) {
-			if (item.equals(origin)) {
-				response.setHeader("Access-Control-Allow-Origin", item);
+		if ("OPTIONS".equals(request.getMethod())
+				&& (edestinyApiProperty.getOriginPermitidaColetor().equals(request.getHeader("Origin"))
+						|| edestinyApiProperty.getOriginPermitidaMonitoramento().equals(request.getHeader("Origin"))
+						|| edestinyApiProperty.getOriginPermitidaDetentor().equals(request.getHeader("Origin")))) {
+			response.setHeader("Access-Control-Allow-Methods", "POST, GET, DELETE, PUT, OPTIONS");
+			response.setHeader("Access-Control-Allow-Headers", "Authorization, Content-Type, Accept");
+			response.setHeader("Access-Control-Max-Age", "3600");
 
-				if ("OPTIONS".equals(request.getMethod())) {
-					response.setHeader("Access-Control-Allow-Methods", "POST, GET, DELETE, PUT, OPTIONS");
-					response.setHeader("Access-Control-Allow-Headers", "Authorization, Content-Type, Accept");
-					response.setHeader("Access-Control-Max-Age", "3600");
-
-					response.setStatus(HttpServletResponse.SC_OK);
-				} else {
-					chain.doFilter(req, resp);
-				}
-				break;
-			}
+			response.setStatus(HttpServletResponse.SC_OK);
+		} else {
+			chain.doFilter(req, resp);
 		}
 
 	}

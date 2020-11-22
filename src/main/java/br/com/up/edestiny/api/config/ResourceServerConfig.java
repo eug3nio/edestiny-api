@@ -14,8 +14,9 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 	@Override
 	public void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests()
-				.antMatchers("/usuario/recuperarSenha", "/detentor/novoDetentor", "/coletor/novoColetor",  "/detentor/recuperarSenha").permitAll()
-				.anyRequest().authenticated().and().sessionManagement()
+				.antMatchers("/usuario/recuperarSenha", "/detentor/novoDetentor", "/coletor/novoColetor",
+						"/detentor/recuperarSenha", "/urna/atualizarUrna")
+				.permitAll().anyRequest().authenticated().and().sessionManagement()
 				.sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().csrf().disable();
 	}
 

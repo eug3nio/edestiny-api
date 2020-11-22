@@ -18,8 +18,8 @@ public class RabbitMQSender {
 	private String routingkey;	
 	
 	public void send(String mensagem) {
-		System.out.println(exchange + " - " + routingkey + " - " + mensagem);
-		rabbitTemplate.convertAndSend(exchange, routingkey, mensagem);
+		System.out.println(routingkey + " - " + mensagem);
+		rabbitTemplate.convertAndSend(routingkey, mensagem);
 		System.out.println("Send msg = " + mensagem);
 	}
 }

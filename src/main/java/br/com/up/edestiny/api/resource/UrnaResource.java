@@ -1,6 +1,7 @@
 package br.com.up.edestiny.api.resource;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -48,16 +49,16 @@ public class UrnaResource implements Serializable {
 
 	@Autowired
 	private UrnaRepository urnaRepository;
-	
+
 	@Autowired
 	private EmpresaRepository empresaRepository;
-	
+
 	@Autowired
 	private UsuarioRepository usuarioRepository;
 
 	@Autowired
 	private UrnaService urnaService;
-	
+
 	@Autowired
 	private RabbitMQSender rabbitMQSender;
 
@@ -71,7 +72,7 @@ public class UrnaResource implements Serializable {
 			throw new EmptyResultDataAccessException(1);
 		}
 	}
-	
+
 	@GetMapping
 	public Page<Urna> pesquisar(UrnaFilter filter, Pageable pageable) {
 		return urnaRepository.filtrar(filter, pageable);
@@ -87,12 +88,36 @@ public class UrnaResource implements Serializable {
 		Optional<Urna> opt = urnaRepository.findById(id);
 		return opt.isPresent() ? ResponseEntity.ok(opt.get()) : ResponseEntity.notFound().build();
 	}
-	
+
 	@GetMapping("/listaUrnasEmpresa/{id}")
 	public ResponseEntity<List<Urna>> listaUrnasEmpresa(@PathVariable Long id) {
 		Optional<Empresa> opt = empresaRepository.findById(id);
 		List<Urna> lista = urnaRepository.findByEmpresa(opt.get());
 		return !lista.isEmpty() ? ResponseEntity.ok(lista) : ResponseEntity.noContent().build();
+	}
+
+	@GetMapping("/atualizarUrna")
+	public void atualizarUrna(@RequestBody Long id) {
+		Optional<Urna> opt = urnaRepository.findById(id);
+
+		if (opt.isPresent()) {
+			Urna urna = opt.get();
+			urna.setQtdAtual(urna.getQtdAtual().add(BigDecimal.ONE));
+
+			urnaRepository.save(urna);
+		}
+	}
+
+	@GetMapping("/zerarUrna/{id}")
+	public void zerarUrna(@PathVariable Long id) {
+		Optional<Urna> opt = urnaRepository.findById(id);
+
+		if (opt.isPresent()) {
+			Urna urna = opt.get();
+			urna.setQtdAtual(BigDecimal.ZERO);
+
+			urnaRepository.save(urna);
+		}
 	}
 
 	@PostMapping
@@ -103,11 +128,11 @@ public class UrnaResource implements Serializable {
 		publisher.publishEvent(new RecursoCriadoEvent(this, response, novaUrna.getId()));
 		return ResponseEntity.status(HttpStatus.CREATED).body(novaUrna);
 	}
-	
+
 	@GetMapping(value = "/enviarMensagem")
-	public String enviarMensagem(@RequestParam("mensagem") String mensagem) {
+	public ResponseEntity<?> enviarMensagem(@RequestParam("mensagem") String mensagem) {
 		rabbitMQSender.send(mensagem);
-		return "Message sent to the RabbitMQ JavaInUse Successfully";
+		return ResponseEntity.ok("Message sent to the RabbitMQ JavaInUse Successfully");
 	}
 
 	@DeleteMapping("/{id}")
