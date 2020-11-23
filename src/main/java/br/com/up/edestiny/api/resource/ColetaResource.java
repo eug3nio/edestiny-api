@@ -88,7 +88,7 @@ public class ColetaResource implements Serializable {
 
 	@PostMapping
 	@ResponseStatus(code = HttpStatus.CREATED)
-	public ResponseEntity<Coleta> criarColeta(@Valid @RequestBody Coleta coleta, HttpServletResponse response) {
+	public ResponseEntity<Coleta> criarColeta(@RequestBody Coleta coleta, HttpServletResponse response) {
 		coleta.setSituacao(SituacaoColeta.EM_DIGITACAO);
 
 		Coleta novaColeta = coletaRepository.save(coleta);

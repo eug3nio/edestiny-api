@@ -3,12 +3,10 @@ package br.com.up.edestiny.api.resource;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
@@ -87,7 +85,7 @@ public class SolicitacaoResource implements Serializable {
 
 	@PostMapping
 	@ResponseStatus(code = HttpStatus.CREATED)
-	public ResponseEntity<Solicitacao> novaSolicitacao(@Valid @RequestBody Solicitacao solicitacao,
+	public ResponseEntity<Solicitacao> novaSolicitacao(@RequestBody Solicitacao solicitacao,
 			HttpServletResponse response) {
 		Optional<Detentor> detentor = detentorRepository.findById(solicitacao.getSolicitante().getId());
 
@@ -97,24 +95,27 @@ public class SolicitacaoResource implements Serializable {
 			solicitacao.setSolicitante(detentor.get());
 		}
 
-		List<Residuo> residuos = new ArrayList<>();
 		for (Residuo item : solicitacao.getResiduos()) {
 			Optional<Categoria> categoria = categoriaRepository.findByDescricao(item.getCategoria().getDescricao());
+			item.setSolicitacao(solicitacao);
 			if (!categoria.isPresent()) {
 				throw new EmptyResultDataAccessException(1);
 			} else {
 				item.setCategoria(categoria.get());
 			}
-			residuos.add(residuoRepository.save(item));
+			
 		}
 
-		solicitacao.setResiduos(residuos);
 
 		ZoneId zoneId = ZoneId.of("GMT");
 		LocalDate dtSolicitacao = LocalDate.now(zoneId);
 		solicitacao.setDtSolicitacao(dtSolicitacao);
 
 		Solicitacao novaSolicitacao = solicitacaoRepository.save(solicitacao);
+		
+		for (Residuo residuo : solicitacao.getResiduos()) {
+			residuoRepository.save(residuo);
+		}
 
 		publisher.publishEvent(new RecursoCriadoEvent(this, response, novaSolicitacao.getId()));
 

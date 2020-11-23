@@ -96,9 +96,9 @@ public class UrnaResource implements Serializable {
 		return !lista.isEmpty() ? ResponseEntity.ok(lista) : ResponseEntity.noContent().build();
 	}
 
-	@GetMapping("/atualizarUrna")
-	public void atualizarUrna(@RequestBody Long id) {
-		Optional<Urna> opt = urnaRepository.findById(id);
+	@GetMapping(value = "/atualizarUrna")
+	public void atualizarUrna(@RequestParam("id") String id) {
+		Optional<Urna> opt = urnaRepository.findById(Long.parseLong(id));
 
 		if (opt.isPresent()) {
 			Urna urna = opt.get();
@@ -124,6 +124,7 @@ public class UrnaResource implements Serializable {
 	@ResponseStatus(code = HttpStatus.CREATED)
 	public ResponseEntity<Urna> novaUrna(@Valid @RequestBody Urna urna, HttpServletResponse response) {
 		Urna novaUrna = urnaRepository.save(urna);
+		enviarMensagem("QtdMaxima:" + novaUrna.getQtdMaxima());
 
 		publisher.publishEvent(new RecursoCriadoEvent(this, response, novaUrna.getId()));
 		return ResponseEntity.status(HttpStatus.CREATED).body(novaUrna);
@@ -143,6 +144,7 @@ public class UrnaResource implements Serializable {
 
 	@PutMapping("/{id}")
 	public ResponseEntity<Urna> atualizarUrna(@PathVariable Long id, @Valid @RequestBody Urna urna) {
+		enviarMensagem("QtdMaxima:" + urna.getQtdMaxima());
 		return ResponseEntity.status(HttpStatus.OK).body(urnaService.atualizarUrna(id, urna));
 	}
 
