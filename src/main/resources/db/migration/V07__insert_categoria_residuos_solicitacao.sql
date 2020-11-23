@@ -43,14 +43,9 @@ INSERT INTO solicitacao(solicitante_id,situacao,coleta_id,justificativa,dt_solic
 VALUES
 ('2','ABERTA',null,null,'2020-11-21');
 
-
 INSERT INTO solicitacao(solicitante_id,situacao,coleta_id,justificativa,dt_solicitacao)
 VALUES
 ('3','ABERTA',null,null,'2020-11-22');
-
-INSERT INTO solicitacao(solicitante_id,situacao,coleta_id,justificativa,dt_solicitacao)
-VALUES
-('4','ABERTA',null,null,'2020-11-23');
 
 INSERT INTO residuo(descricao,quantidade,unidade_medida,categoria_id,solicitacao_id)
 VALUES
